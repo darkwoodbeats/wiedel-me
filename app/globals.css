@@ -1,0 +1,66 @@
+@import "tailwindcss";
+
+/* Design tokens — the old :root custom properties, now Tailwind theme keys.
+   Brand colors are namespaced so they don't shadow Tailwind's stock
+   `lime`/`cyan`/`pink` palettes. */
+@theme {
+  --color-bg: #08090d;
+  --color-panel: #11131a;
+  --color-panel-2: #151822;
+  --color-ink: #f4f5f7;
+  --color-muted: #a7acb8;
+  --color-line: #272b37;
+  --color-brand-lime: #c7ff4a;
+  --color-brand-cyan: #5ce1e6;
+  --color-brand-pink: #ff6bd6;
+
+  --font-sans: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+
+  --container-site: 1180px;
+  --radius-card: 24px;
+
+  --animate-marquee: marquee 28s linear infinite;
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background:
+    radial-gradient(circle at 80% 0%, rgb(92 225 230 / 0.12), transparent 32%),
+    radial-gradient(circle at 10% 20%, rgb(199 255 74 / 0.08), transparent 30%),
+    var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  line-height: 1.55;
+}
+
+/* Scroll-reveal. The `.show` class is added by <Reveal> once the element
+   intersects the viewport; without JS the content stays visible. */
+@utility reveal-init {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: 0.65s ease;
+}
+
+/* Gradient wordmark used in the hero headline. */
+@utility text-gradient {
+  background: linear-gradient(100deg, #fff 15%, var(--color-brand-cyan) 48%, var(--color-brand-lime) 85%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+/* Outlined marquee wordmarks. */
+@utility text-outlined {
+  color: transparent;
+  -webkit-text-stroke: 1px #7f8592;
+}
