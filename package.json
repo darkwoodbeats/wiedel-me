@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "screenshots": "node scripts/capture-screenshots.mts"
+    "screenshots": "node scripts/capture-screenshots.mts",
+    "deploy": "next build && cd out && zip -qr ../wiedel-me-deploy.zip . -x \".DS_Store\" && cd .. && echo \"Built wiedel-me-deploy.zip — upload to public_html and Extract\"",
+    "logos": "node scripts/capture-logos.mts"
   },
   "dependencies": {
     "next": "^16.3.4",

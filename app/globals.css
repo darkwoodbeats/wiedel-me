@@ -33,6 +33,12 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Anchor targets stop below the 75px sticky header instead of underneath it. */
+main[id],
+main section[id] {
+  scroll-margin-top: 90px;
+}
+
 body {
   background:
     radial-gradient(circle at 80% 0%, rgb(92 225 230 / 0.12), transparent 32%),
@@ -57,10 +63,4 @@ body {
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
-}
-
-/* Outlined marquee wordmarks. */
-@utility text-outlined {
-  color: transparent;
-  -webkit-text-stroke: 1px #7f8592;
 }

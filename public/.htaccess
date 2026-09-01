@@ -1,0 +1,39 @@
+# Static Next.js export on Apache (cPanel / A Small Orange).
+
+# --- Compression ------------------------------------------------------------
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml \
+    application/javascript application/json image/svg+xml
+</IfModule>
+
+# --- Caching ----------------------------------------------------------------
+<IfModule mod_expires.c>
+  ExpiresActive On
+  # Hashed build assets are immutable — cache them hard.
+  <FilesMatch "\.(js|css|woff2)$">
+    ExpiresDefault "access plus 1 year"
+    Header set Cache-Control "public, immutable"
+  </FilesMatch>
+  # Images change when a client redesigns; a month is a reasonable compromise.
+  <FilesMatch "\.(jpg|jpeg|png|svg|webp|avif|ico)$">
+    ExpiresDefault "access plus 1 month"
+  </FilesMatch>
+  # HTML must revalidate so a redeploy is picked up immediately.
+  <FilesMatch "\.html$">
+    ExpiresDefault "access plus 0 seconds"
+    Header set Cache-Control "public, max-age=0, must-revalidate"
+  </FilesMatch>
+</IfModule>
+
+# --- Force HTTPS ------------------------------------------------------------
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{HTTPS} !=on
+  RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
+</IfModule>
+
+# --- Custom 404 -------------------------------------------------------------
+ErrorDocument 404 /404.html
+
+# Next's export writes directory-style URLs; let Apache serve their index.html.
+DirectoryIndex index.html

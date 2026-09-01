@@ -9,7 +9,7 @@ export default function Contact() {
     >
       <Reveal className="rounded-(--radius-card) border border-line bg-white/2.5 p-8">
         <div className="text-[0.76rem] font-bold tracking-[0.16em] text-brand-lime uppercase">Let&rsquo;s talk</div>
-        <h2 className="mt-0 mb-[18px] font-display text-[2.5rem] leading-none tracking-[-0.06em] sm:text-[3rem]">
+        <h2 className="mt-3 mb-[18px] font-display text-[2.5rem] leading-none tracking-[-0.06em] sm:text-[3rem]">
           Have a problem worth solving?
         </h2>
         <p className="text-muted">

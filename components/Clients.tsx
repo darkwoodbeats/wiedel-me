@@ -1,14 +1,9 @@
 import Image from "next/image";
+import { projects } from "@/lib/projects";
 import Reveal from "./Reveal";
 
-const wordmarks = [
-  { label: "CLIENT NAME", outlined: false },
-  { label: "COMPANY NAME", outlined: true },
-  { label: "ENTITY NAME", outlined: false },
-  { label: "PROJECT NAME", outlined: true },
-  { label: "STUDIO NAME", outlined: false },
-  { label: "ORG NAME", outlined: true },
-];
+// Only projects with a usable white logo appear in the marquee.
+const logos = projects.filter((project) => project.logo);
 
 function Track({ ariaHidden = false }: { ariaHidden?: boolean }) {
   return (
@@ -16,20 +11,15 @@ function Track({ ariaHidden = false }: { ariaHidden?: boolean }) {
       aria-hidden={ariaHidden || undefined}
       className="flex min-w-max items-center gap-11 px-6 py-[21px] sm:gap-[72px] sm:px-9 sm:py-[25px]"
     >
-      {!ariaHidden && (
-        <span className="shrink-0">
-          <Image src="/img/logos/hyundai.svg" alt="Hyundai" width={120} height={32} className="h-8 w-auto" />
-        </span>
-      )}
-      {wordmarks.map((mark) => (
-        <span
-          key={mark.label}
-          className={`font-display text-[1.08rem] font-bold tracking-[0.08em] whitespace-nowrap ${
-            mark.outlined ? "text-outlined" : "text-[#dce0e8]"
-          }`}
-        >
-          {mark.label}
-        </span>
+      {logos.map((project) => (
+        <Image
+          key={project.slug}
+          src={project.logo!}
+          alt={ariaHidden ? "" : project.title}
+          width={240}
+          height={32}
+          className="h-7 w-auto shrink-0 opacity-70 transition-opacity duration-300 hover:opacity-100 sm:h-8"
+        />
       ))}
     </div>
   );
@@ -49,6 +39,8 @@ export default function Clients() {
         </Reveal>
       </div>
 
+      {/* Two identical tracks scrolling as one strip — the animation translates
+          half the total width, so the second track seamlessly takes over. */}
       <div
         aria-label="Selected clients and collaborators"
         className="flex w-max animate-marquee border-y border-line motion-reduce:animate-none"

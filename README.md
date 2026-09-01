@@ -50,6 +50,26 @@ Screenshots are taken with headless Chromium at 1280×800 @2x and written to
 `public/screenshots/<slug>.jpg`. The script strips common cookie/consent overlays and
 falls back from `networkidle` to `load` for sites that never go idle.
 
+## Client logo marquee
+
+The marquee above the projects renders every project that has a `logo` set, so adding a
+logo to `lib/projects.ts` is all it takes to put a company in the strip.
+
+```bash
+npm run logos             # all projects
+npm run logos -- runza    # just one
+```
+
+`scripts/capture-logos.mts` finds each site's header logo, re-renders it in isolation on a
+transparent page, and recolors it to a white silhouette at the original alpha. It rejects
+any logo whose source has a baked-in background — a silhouette of those is a white block —
+and lists what it skipped.
+
+Some logos can't be derived this way: any mark whose internal detail is carried by color
+rather than transparency flattens into a blob. Those need a real white/knockout asset from
+the client's brand kit, dropped into `public/img/logos/` and pointed at from
+`lib/projects.ts`.
+
 ## Make the contact form live
 
 Create a form at [Formspree](https://formspree.io), then set the endpoint in `.env.local`:
@@ -60,7 +80,29 @@ NEXT_PUBLIC_FORMSPREE_ENDPOINT=https://formspree.io/f/your_form_id
 
 Without it the form falls back to the placeholder endpoint and won't deliver.
 
-## Deploy
+## Deploy (A Small Orange / any Apache host)
 
-`npm run build` produces a fully static prerender — deploy to Vercel, Cloudflare Pages,
-Netlify, or any static host.
+The site is configured for static export (`output: "export"` in `next.config.ts`), so it
+builds to plain HTML/CSS/JS in `./out` and needs **no Node process on the server**.
+
+```bash
+npm run deploy      # builds, then zips ./out to wiedel-me-deploy.zip
+```
+
+Then in cPanel → File Manager → `public_html`: upload the zip, Extract, delete the zip.
+Everything inside `out/` goes at the document root — not the `out` folder itself.
+
+Or over the wire:
+
+```bash
+rsync -avz --delete out/ user@host:~/public_html/
+```
+
+`public/.htaccess` ships with the export and handles gzip, cache headers, the HTTPS
+redirect, and the 404 page.
+
+### Deploying somewhere with a Node runtime instead
+
+Remove `output: "export"` and `images.unoptimized` from `next.config.ts` and deploy to
+Vercel, Netlify, or Cloudflare Pages. That re-enables the built-in image optimizer, which
+is turned off here because a static export has no server to run it.

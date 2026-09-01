@@ -1,4 +1,4 @@
-import Link from "next/link";
+import BrandLink from "./BrandLink";
 
 const links = [
   { href: "#services", label: "Services" },
@@ -11,9 +11,7 @@ export default function Nav() {
   return (
     <header className="sticky top-0 z-20 border-b border-white/6 bg-bg/76 backdrop-blur-[18px]">
       <div className="mx-auto flex h-[74px] w-[min(100%-40px,var(--container-site))] items-center justify-between">
-        <Link href="#top" className="font-display text-xl font-bold tracking-[-0.04em]">
-          Caleb Wiedel
-        </Link>
+        <BrandLink className="font-display text-xl font-bold tracking-[-0.04em]">Caleb Wiedel</BrandLink>
 
         <nav className="hidden gap-6 text-[0.92rem] text-muted md:flex">
           {links.map((link) => (

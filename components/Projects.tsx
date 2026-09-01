@@ -6,7 +6,7 @@ export default function Projects() {
   return (
     <section id="work" className="mx-auto w-[min(100%-40px,var(--container-site))] py-[90px]">
       <Reveal className="mb-[30px] block sm:flex sm:items-end sm:justify-between sm:gap-[30px]">
-        <h2 className="m-0 font-display text-[clamp(2rem,4vw,3.3rem)] tracking-[-0.055em]">
+        <h2 className="m-0 font-display text-[clamp(2rem,4vw,3.3rem)] leading-[0.95] tracking-[-0.055em]">
           Recent
           <br />
           projects.
