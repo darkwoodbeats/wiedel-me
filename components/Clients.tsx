@@ -1,9 +1,9 @@
 import Image from "next/image";
-import { projects } from "@/lib/projects";
+import { projects, type ProjectWithLogo } from "@/lib/projects";
 import Reveal from "./Reveal";
 
 // Only projects with a usable white logo appear in the marquee.
-const logos = projects.filter((project) => project.logo);
+const logos = projects.filter((project): project is ProjectWithLogo => Boolean(project.logo));
 
 function Track({ ariaHidden = false }: { ariaHidden?: boolean }) {
   return (
@@ -14,10 +14,13 @@ function Track({ ariaHidden = false }: { ariaHidden?: boolean }) {
       {logos.map((project) => (
         <Image
           key={project.slug}
-          src={project.logo!}
+          src={project.logo}
           alt={ariaHidden ? "" : project.title}
-          width={240}
-          height={32}
+          // Each logo's true size at its natural 96px height. The strip animates
+          // while these lazy-load, so a wrong ratio here reserves the wrong box
+          // and jerks the track sideways as each image lands.
+          width={project.logoWidth}
+          height={96}
           className="h-7 w-auto shrink-0 opacity-70 transition-opacity duration-300 hover:opacity-100 sm:h-8"
         />
       ))}
