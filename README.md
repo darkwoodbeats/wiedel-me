@@ -15,16 +15,19 @@ npm run build    # production build (fully static)
 
 ```
 app/
-  layout.tsx     Fonts (DM Sans + Space Grotesk via next/font), metadata
-  page.tsx       Section composition
+  layout.tsx     Fonts (DM Sans + Space Grotesk via next/font), metadata, Nav + Footer
+  page.tsx       Home: sections for local businesses and agencies + JSON-LD
+  music/page.tsx DJ, lessons, and music production
+  icon.svg       Favicon (apple-icon.png is the iOS home-screen version)
   globals.css    Tailwind import + design tokens (@theme) + custom utilities
-components/      Nav, Hero, Services, About, Clients, Projects, Contact, Footer, Reveal
+components/      Nav, Hero, ServiceGrid, About, Process, CarePlans, Clients, Projects, Testimonials, Contact, Footer, Logo
 lib/projects.ts  The project list rendered by the Projects section
+lib/testimonials.ts  Partner quotes; the section is hidden while empty
+lib/site.ts      Site URL, LinkedIn, Calendly link
 scripts/         Screenshot capture
 public/
-  img/           Portrait + client logos
+  img/           Portrait, Wiedel.me logo + favicon sources, client logos
   screenshots/   Captured homepage screenshots, one per project slug
-legacy/          The original static index.html + styles.css this replaced
 ```
 
 ## Design tokens
@@ -67,7 +70,7 @@ and lists what it skipped.
 
 Some logos can't be derived this way: any mark whose internal detail is carried by color
 rather than transparency flattens into a blob. Those need a real white/knockout asset from
-the client's brand kit, dropped into `public/img/logos/` and pointed at from
+the client's brand kit, dropped into `public/img/project_logos/` and pointed at from
 `lib/projects.ts`.
 
 ## Make the contact form live
@@ -79,6 +82,17 @@ NEXT_PUBLIC_FORMSPREE_ENDPOINT=https://formspree.io/f/your_form_id
 ```
 
 Without it the form falls back to the placeholder endpoint and won't deliver.
+
+## Book-a-call buttons
+
+Set your Calendly link in `.env.local`:
+
+```
+NEXT_PUBLIC_CALENDLY_URL=https://calendly.com/your-name/intro-call
+```
+
+Unset, the "Book a call" buttons scroll to the contact form instead. Both values are
+baked in at build time, so rebuild after changing them.
 
 ## Deploy (A Small Orange / any Apache host)
 

@@ -21,6 +21,21 @@
   --radius-card: 24px;
 
   --animate-marquee: marquee 28s linear infinite;
+  --animate-blip: blip 2.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+/* Radar ping: a ring swells out from the status light and fades. Grows via
+   inset rather than scale() so the 1px border stays hairline-thin. */
+@keyframes blip {
+  0% {
+    inset: 0;
+    opacity: 0.9;
+  }
+  75%,
+  100% {
+    inset: -9px;
+    opacity: 0;
+  }
 }
 
 @keyframes marquee {

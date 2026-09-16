@@ -11,15 +11,6 @@ const FORMSPREE_ENDPOINT = process.env.NEXT_PUBLIC_FORMSPREE_ENDPOINT ?? "https:
  */
 const isUnconfigured = FORMSPREE_ENDPOINT.includes("YOUR_FORM_ID");
 
-const serviceOptions = [
-  "Web Design / Development",
-  "Graphic / Logo Design",
-  "IT Help",
-  "Wedding / Event DJ",
-  "DJ Lessons",
-  "Music Production",
-  "Something else",
-];
 
 const fieldClass =
   "w-full rounded-[13px] border border-line bg-[#0b0d12] px-3.5 py-[13px] font-inherit text-white outline-none focus:border-brand-cyan focus:shadow-[0_0_0_3px_rgb(92_225_230/0.1)]";
@@ -27,7 +18,14 @@ const labelClass = "text-[0.82rem] text-[#c9ced8]";
 
 type Status = "idle" | "submitting" | "success" | "error";
 
-export default function ContactForm() {
+type ContactFormProps = {
+  /** Choices for the "What can I help with?" dropdown. */
+  serviceOptions: string[];
+  /** Email subject Formspree uses, so leads from each page are easy to tell apart. */
+  subject: string;
+};
+
+export default function ContactForm({ serviceOptions, subject }: ContactFormProps) {
   const [status, setStatus] = useState<Status>("idle");
   const [errorMessage, setErrorMessage] = useState("");
   const [name, setName] = useState("");
@@ -154,7 +152,7 @@ export default function ContactForm() {
 
         {/* Spam honeypot — hidden from humans, tempting to bots. */}
         <input type="text" name="_gotcha" tabIndex={-1} autoComplete="off" className="absolute -left-[9999px] opacity-0" />
-        <input type="hidden" name="_subject" value="New lead from wiedel.me" />
+        <input type="hidden" name="_subject" value={subject} />
 
         <button
           type="submit"

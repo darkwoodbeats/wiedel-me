@@ -20,7 +20,7 @@ import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { projects } from "../lib/projects.ts";
 
-const OUT_DIR = path.join(process.cwd(), "public", "img", "logos");
+const OUT_DIR = path.join(process.cwd(), "public", "img", "project_logos");
 const TARGET_H = 96; // 3x the 32px the marquee renders at
 const UA =
   "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36";
@@ -149,7 +149,7 @@ async function main() {
   }
 
   await browser.close();
-  console.log(`\n${ok.length}/${queue.length} logos written to public/img/logos/`);
+  console.log(`\n${ok.length}/${queue.length} logos written to public/img/project_logos/`);
   if (needsManual.length) {
     console.log("\nNeed a hand-supplied white PNG:");
     needsManual.forEach((f) => console.log(`  - ${f.slug.padEnd(20)} ${f.why}`));
