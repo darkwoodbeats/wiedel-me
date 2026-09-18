@@ -33,7 +33,7 @@ export default function Clients() {
     <section aria-labelledby="clients-title" className="overflow-hidden pt-[30px] pb-5">
       <div className="mx-auto w-[min(100%-40px,var(--container-site))]">
         <Reveal className="mb-[22px] block sm:flex sm:items-center sm:justify-between sm:gap-5">
-          <div id="clients-title" className="text-[0.76rem] font-bold tracking-[0.16em] text-brand-lime uppercase">
+          <div id="clients-title" className="text-[0.76rem] font-bold tracking-[0.16em] text-brand-purple uppercase">
             Selected work
           </div>
           <span className="mt-2 block text-[0.9rem] text-muted sm:mt-0 sm:inline">

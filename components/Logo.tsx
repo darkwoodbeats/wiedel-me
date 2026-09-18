@@ -1,20 +1,61 @@
+"use client";
+
+import { useEffect, useRef } from "react";
+import { createTimeline, stagger, svg } from "animejs";
+import { logoPaths } from "@/lib/logo-paths";
+
 /**
  * Wiedel.me wordmark, inlined from public/img/wiedel-me-logo.svg. The source file
  * is filled near-black for print/light backgrounds; here it takes currentColor so
  * it reads on the dark theme and follows hover colors.
+ *
+ * With `animated`, anime.js draws each letter's outline in sequence and then fades
+ * the fill in behind it. The paths start stroked-but-unfilled only once JS has
+ * taken over (see the effect below), so without JS — and with reduced motion — the
+ * wordmark just renders solid.
  */
-export default function Logo({ className }: { className?: string }) {
+export default function Logo({ className, animated = false }: { className?: string; animated?: boolean }) {
+  const ref = useRef<SVGSVGElement>(null);
+
+  useEffect(() => {
+    const root = ref.current;
+    if (!animated || !root) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const paths = Array.from(root.querySelectorAll<SVGPathElement>("path"));
+    // Hidden fill + hairline stroke is the animation's starting frame, so it's set
+    // here rather than in the markup: if this effect never runs, nothing hides.
+    paths.forEach((path) => {
+      path.style.fillOpacity = "0";
+      path.style.stroke = "currentColor";
+      path.style.strokeWidth = "0.6";
+    });
+
+    const drawables = svg.createDrawable(paths);
+    const timeline = createTimeline({ defaults: { ease: "inOut(2)" } })
+      .add(drawables, { draw: ["0 0", "0 1"], duration: 900 }, stagger(70))
+      .add(paths, { fillOpacity: [0, 1], duration: 500 }, stagger(70, { start: 420 }))
+      .add(paths, { strokeOpacity: [1, 0], duration: 400 }, "-=300");
+
+    return () => {
+      timeline.revert();
+      // revert() restores anime's own properties; the starting frame is ours.
+      paths.forEach((path) => path.removeAttribute("style"));
+    };
+  }, [animated]);
+
   return (
-    <svg viewBox="0 0 328.11 31.87" fill="currentColor" role="img" aria-label="Wiedel.me" className={className}>
-      <path d="M61.19.66l-9.02,26c-1.05,3.1-4.09,5.2-7.52,5.2s-6.47-2.1-7.52-5.2l-6.53-19.31-6.53,19.31c-1.05,3.1-4.09,5.2-7.52,5.2s-6.47-2.1-7.52-5.2L0,.66h8.41l8.13,23.85,6.53-19.31c1.05-3.1,4.09-5.2,7.52-5.2s6.47,2.1,7.52,5.2l6.53,19.31L52.73.66h8.46Z" />
-      <path d="M70.05,31.21h-7.97V.66h7.97v30.54Z" />
-      <path d="M116.52,31.21h-33.31c-5.31,0-9.63-4.32-9.63-9.63v-11.29c0-5.31,4.32-9.63,9.63-9.63h33.31v7.97h-34.97v3.32h34.97v7.97h-34.97v3.32h34.97v7.97Z" />
-      <path d="M163,21.58c0,5.31-4.32,9.63-9.63,9.63h-33.31V.66h33.31c5.31,0,9.63,4.32,9.63,9.63v11.29ZM155.03,23.24v-14.61h-27v14.61h27Z" />
-      <path d="M209.48,31.21h-33.31c-5.31,0-9.63-4.32-9.63-9.63v-11.29c0-5.31,4.32-9.63,9.63-9.63h33.31v7.97h-34.97v3.32h34.97v7.97h-34.97v3.32h34.97v7.97Z" />
-      <path d="M247.99,31.21h-25.34c-5.31,0-9.63-4.32-9.63-9.63V.66h7.97v22.57h27v7.97Z" />
-      <path d="M258.61,31.21h-7.97v-7.97h7.97v7.97Z" />
-      <path d="M299.55,31.21h-4.9v-13.87h-11.7v13.87h-4.89v-13.87h-11.7v13.87h-4.9V12.44h32.16c3.26,0,5.92,2.65,5.92,5.92v12.85Z" />
-      <path d="M328.11,31.21h-20.47c-3.26,0-5.92-2.65-5.92-5.92v-6.93c0-3.26,2.65-5.92,5.92-5.92h14.55c3.26,0,5.92,2.65,5.92,5.92v5.92h-21.49v2.04h21.49v4.9ZM323.21,19.37v-2.04h-16.59v2.04h16.59Z" />
+    <svg
+      ref={ref}
+      viewBox="0 0 328.11 31.87"
+      fill="currentColor"
+      role="img"
+      aria-label="Wiedel.me"
+      className={className}
+    >
+      {logoPaths.map((d) => (
+        <path key={d} d={d} />
+      ))}
     </svg>
   );
 }

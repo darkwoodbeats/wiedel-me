@@ -10,11 +10,11 @@ export default function CarePlans() {
   return (
     <section id="care" className="mx-auto w-[min(100%-40px,var(--container-site))] py-[90px]">
       <Reveal className="relative overflow-hidden rounded-[32px] border border-line bg-linear-[145deg,#151820,#0d0f15] p-7 sm:p-11">
-        <div className="pointer-events-none absolute -top-[120px] -right-[100px] size-[320px] rounded-full bg-[radial-gradient(circle_at_40%_40%,rgb(199_255_74/0.35),rgb(199_255_74/0)_68%)]" />
+        <div className="pointer-events-none absolute -top-[120px] -right-[100px] size-[320px] rounded-full bg-[radial-gradient(circle_at_40%_40%,rgb(179_136_255/0.35),rgb(179_136_255/0)_68%)]" />
 
         <div className="relative grid grid-cols-1 gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
           <div>
-            <div className="text-[0.76rem] font-bold tracking-[0.16em] text-brand-lime uppercase">Care plans</div>
+            <div className="text-[0.76rem] font-bold tracking-[0.16em] text-brand-purple uppercase">Care plans</div>
             <h2 className="mt-3 mb-[18px] font-display text-[clamp(2rem,4vw,3.3rem)] leading-[0.95] tracking-[-0.055em]">
               Launch is the start, not the end.
             </h2>
@@ -29,7 +29,7 @@ export default function CarePlans() {
             </div>
             <a
               href="#contact"
-              className="mt-7 inline-flex items-center justify-center rounded-full border border-brand-lime bg-brand-lime px-[21px] py-[14px] font-bold text-[#0a0b0d] transition-transform duration-200 hover:-translate-y-0.5"
+              className="mt-7 inline-flex items-center justify-center rounded-full border border-brand-purple bg-brand-purple px-[21px] py-[14px] font-bold text-[#0a0b0d] transition-transform duration-200 hover:-translate-y-0.5"
             >
               Ask about a care plan →
             </a>
@@ -41,7 +41,7 @@ export default function CarePlans() {
                 <svg viewBox="0 0 24 24" fill="none" className="mt-0.5 size-5 shrink-0" aria-hidden="true">
                   <path
                     d="M5 12.5l4.5 4.5L19 7.5"
-                    stroke="var(--color-brand-lime)"
+                    stroke="var(--color-brand-purple)"
                     strokeWidth="2.2"
                     strokeLinecap="round"
                     strokeLinejoin="round"

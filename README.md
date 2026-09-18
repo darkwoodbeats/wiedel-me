@@ -33,7 +33,7 @@ public/
 ## Design tokens
 
 Colors, fonts, container width, and the marquee animation live in `@theme` in
-`app/globals.css`, so they're available as Tailwind utilities (`text-brand-lime`,
+`app/globals.css`, so they're available as Tailwind utilities (`text-brand-purple`,
 `border-line`, `font-display`, `w-[min(100%-40px,var(--container-site))]`, `animate-marquee`).
 Brand colors are namespaced `brand-*` so they don't shadow Tailwind's stock palettes.
 

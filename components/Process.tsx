@@ -40,7 +40,7 @@ export default function Process() {
             delay={i * 60}
             className="rounded-(--radius-card) border border-line bg-white/2.5 p-7"
           >
-            <div className="font-display text-[2.4rem] leading-none tracking-[-0.06em] text-brand-lime">
+            <div className="font-display text-[2.4rem] leading-none tracking-[-0.06em] text-brand-purple">
               {String(i + 1).padStart(2, "0")}
             </div>
             <h3 className="mt-5 mb-2 font-display text-[1.25rem] leading-tight tracking-[-0.035em]">{step.title}</h3>

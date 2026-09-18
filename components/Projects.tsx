@@ -38,7 +38,7 @@ export default function Projects() {
               </div>
 
               <div className="p-6">
-                <div className="font-display text-[0.8rem] text-brand-lime">
+                <div className="font-display text-[0.8rem] text-brand-purple">
                   {String(i + 1).padStart(2, "0")}
                 </div>
                 <h3 className="mt-3 mb-1.5 font-display text-[1.25rem] leading-tight tracking-[-0.035em]">

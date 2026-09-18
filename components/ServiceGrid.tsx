@@ -33,7 +33,7 @@ export default function ServiceGrid({ id, title, intro, services }: ServiceGridP
             delay={i * 60}
             className="min-h-[220px] rounded-(--radius-card) border border-line bg-linear-[180deg,rgb(255_255_255/0.045),rgb(255_255_255/0.02)] p-7 transition duration-250 hover:-translate-y-[5px] hover:border-[#3b4150]"
           >
-            <div className="font-display text-[0.8rem] text-brand-lime">{service.num}</div>
+            <div className="font-display text-[0.8rem] text-brand-purple">{service.num}</div>
             <h3 className="mt-3 mb-1.5 font-display text-[1.45rem] leading-tight tracking-[-0.035em]">
               {service.title}
             </h3>

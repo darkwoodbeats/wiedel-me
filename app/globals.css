@@ -2,7 +2,7 @@
 
 /* Design tokens — the old :root custom properties, now Tailwind theme keys.
    Brand colors are namespaced so they don't shadow Tailwind's stock
-   `lime`/`cyan`/`pink` palettes. */
+   `purple`/`cyan` palettes. */
 @theme {
   --color-bg: #08090d;
   --color-panel: #11131a;
@@ -10,9 +10,11 @@
   --color-ink: #f4f5f7;
   --color-muted: #a7acb8;
   --color-line: #272b37;
-  --color-brand-lime: #c7ff4a;
+  --color-brand-purple: #b388ff;
   --color-brand-cyan: #5ce1e6;
-  --color-brand-pink: #ff6bd6;
+  /* Availability light — a mint that sits between cyan and "go" green. */
+  --color-status: #5cf0b0;
+  --color-error: #ff6b8a;
 
   --font-sans: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
@@ -57,7 +59,7 @@ main section[id] {
 body {
   background:
     radial-gradient(circle at 80% 0%, rgb(92 225 230 / 0.12), transparent 32%),
-    radial-gradient(circle at 10% 20%, rgb(199 255 74 / 0.08), transparent 30%),
+    radial-gradient(circle at 10% 20%, rgb(179 136 255 / 0.08), transparent 30%),
     var(--color-bg);
   color: var(--color-ink);
   font-family: var(--font-sans);
@@ -74,7 +76,7 @@ body {
 
 /* Gradient wordmark used in the hero headline. */
 @utility text-gradient {
-  background: linear-gradient(100deg, #fff 15%, var(--color-brand-cyan) 48%, var(--color-brand-lime) 85%);
+  background: linear-gradient(100deg, #fff 15%, var(--color-brand-cyan) 48%, var(--color-brand-purple) 85%);
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;

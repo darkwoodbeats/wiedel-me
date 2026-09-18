@@ -37,7 +37,7 @@ export default function Music() {
     <main id="top">
       <section className="mx-auto w-[min(100%-40px,var(--container-site))] pt-[70px] pb-5 lg:pt-[100px]">
         <Reveal>
-          <div className="text-[0.76rem] font-bold tracking-[0.16em] text-brand-lime uppercase">
+          <div className="text-[0.76rem] font-bold tracking-[0.16em] text-brand-purple uppercase">
             Lincoln &amp; Omaha, Nebraska · DJ &amp; Music
           </div>
           <h1 className="my-[18px] mb-7 max-w-[900px] font-display text-[3.2rem] leading-[0.94] tracking-[-0.07em] sm:text-[clamp(3.2rem,6vw,5.5rem)]">
@@ -49,7 +49,7 @@ export default function Music() {
           <div className="mt-[34px] flex flex-wrap gap-3">
             <a
               href="#contact"
-              className="inline-flex items-center justify-center rounded-full border border-brand-lime bg-brand-lime px-[21px] py-[14px] font-bold text-[#0a0b0d] transition-transform duration-200 hover:-translate-y-0.5"
+              className="inline-flex items-center justify-center rounded-full border border-brand-purple bg-brand-purple px-[21px] py-[14px] font-bold text-[#0a0b0d] transition-transform duration-200 hover:-translate-y-0.5"
             >
               Check my availability →
             </a>

@@ -70,11 +70,11 @@ export default function ContactForm({ serviceOptions, subject }: ContactFormProp
   if (status === "success") {
     return (
       <div role="status" aria-live="polite" className="flex min-h-[430px] flex-col items-start justify-center">
-        <div className="flex size-14 items-center justify-center rounded-full border border-brand-lime/40 bg-brand-lime/10">
+        <div className="flex size-14 items-center justify-center rounded-full border border-brand-purple/40 bg-brand-purple/10">
           <svg viewBox="0 0 24 24" fill="none" className="size-7" aria-hidden="true">
             <path
               d="M5 12.5l4.5 4.5L19 7.5"
-              stroke="var(--color-brand-lime)"
+              stroke="var(--color-brand-purple)"
               strokeWidth="2.2"
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -157,20 +157,20 @@ export default function ContactForm({ serviceOptions, subject }: ContactFormProp
         <button
           type="submit"
           disabled={isUnconfigured || submitting}
-          className="mt-3.5 w-full cursor-pointer rounded-full border border-brand-lime bg-brand-lime px-[21px] py-[14px] font-bold text-[#0a0b0d] transition-transform duration-200 hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:border-line disabled:bg-white/6 disabled:text-muted disabled:hover:translate-y-0"
+          className="mt-3.5 w-full cursor-pointer rounded-full border border-brand-purple bg-brand-purple px-[21px] py-[14px] font-bold text-[#0a0b0d] transition-transform duration-200 hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:border-line disabled:bg-white/6 disabled:text-muted disabled:hover:translate-y-0"
         >
           {submitting ? "Sending…" : "Send inquiry →"}
         </button>
       </fieldset>
 
       {status === "error" && (
-        <p role="alert" className="mt-3 text-[0.82rem] leading-relaxed text-brand-pink">
+        <p role="alert" className="mt-3 text-[0.82rem] leading-relaxed text-error">
           {errorMessage}
         </p>
       )}
 
       {isUnconfigured && (
-        <p role="status" className="mt-3 text-[0.78rem] leading-relaxed text-brand-pink">
+        <p role="status" className="mt-3 text-[0.78rem] leading-relaxed text-error">
           Form not connected yet. Set <code className="font-display">NEXT_PUBLIC_FORMSPREE_ENDPOINT</code> in{" "}
           <code className="font-display">.env.local</code> to your Formspree URL, then restart the dev server.
         </p>

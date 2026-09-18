@@ -10,18 +10,18 @@ export default function Hero() {
   return (
     <section className="mx-auto grid w-[min(100%-40px,var(--container-site))] grid-cols-1 items-center gap-[70px] pt-[70px] pb-[90px] lg:grid-cols-[1.15fr_0.85fr] lg:pt-[100px]">
       <Reveal>
-        <div className="text-[0.76rem] font-bold tracking-[0.16em] text-brand-lime uppercase">
+        <div className="text-[0.76rem] font-bold tracking-[0.16em] text-brand-purple uppercase">
           Lincoln, Nebraska · Web, design &amp; IT
         </div>
         <h1 className="my-[18px] mb-7 font-display text-[3.45rem] leading-[0.94] tracking-[-0.07em] sm:text-[clamp(3.2rem,7vw,6.5rem)]">
-          Websites built right. <span className="text-gradient">And looked after.</span>
+          Websites built with trust, <span className="text-gradient">and made to last.</span>
         </h1>
         <p className="max-w-[650px] text-[1.18rem] text-muted">
-          I&rsquo;m Caleb, a web developer and designer in Lincoln. Local businesses hire me to build and care for their
-          websites, and agencies in Lincoln, Nashville, and Kansas City bring me in when they need another developer. Either way, you work directly with me from start to finish.
+          Hey I&rsquo;m Caleb, a web developer and designer in Lincoln, Nebraska. Local businesses hire me to build and care for their
+          websites, and agencies in Lincoln, Nashville, and Kansas City bring me in when they need a trusted developer. Whatever the project, we'll solve your problems together.
         </p>
         <div className="mt-[34px] flex flex-wrap gap-3">
-          <BookCallLink className="inline-flex items-center justify-center rounded-full border border-brand-lime bg-brand-lime px-[21px] py-[14px] font-bold text-[#0a0b0d] transition-transform duration-200 hover:-translate-y-0.5">
+          <BookCallLink className="inline-flex items-center justify-center rounded-full border border-brand-purple bg-brand-purple px-[21px] py-[14px] font-bold text-[#0a0b0d] transition-transform duration-200 hover:-translate-y-0.5">
             Book an intro call →
           </BookCallLink>
           <a
@@ -38,7 +38,7 @@ export default function Hero() {
           proportions when the text is short. */}
       <Reveal className="relative flex min-h-[340px] items-center overflow-hidden rounded-[32px] border border-line bg-linear-[145deg,#151820,#0d0f15] p-[18px] sm:p-[34px] lg:min-h-[310px]">
         {/* Blurred accent orbs — previously .orb:before / .orb:after */}
-        <div className="pointer-events-none absolute -top-[50px] -right-[50px] size-[260px] rounded-full bg-[radial-gradient(circle_at_35%_35%,rgb(199_255_74/0.95),rgb(199_255_74/0)_68%)] blur-[1px]" />
+        <div className="pointer-events-none absolute -top-[50px] -right-[50px] size-[260px] rounded-full bg-[radial-gradient(circle_at_35%_35%,rgb(179_136_255/0.95),rgb(179_136_255/0)_68%)] blur-[1px]" />
         <div className="pointer-events-none absolute -bottom-[140px] -left-[120px] size-[330px] rounded-full bg-[radial-gradient(circle_at_60%_40%,rgb(92_225_230/0.8),rgb(92_225_230/0)_67%)] blur-[1px]" />
 
         <div className="relative z-1 flex w-full flex-col-reverse items-start gap-4 rounded-3xl border border-white/12 bg-[rgb(10_11_15/0.62)] p-5 backdrop-blur-[18px] min-[420px]:flex-row min-[420px]:items-center min-[420px]:justify-between sm:gap-[18px] sm:p-6">
@@ -46,7 +46,7 @@ export default function Hero() {
             <div className="font-display text-[1.35rem] leading-[1.05] font-bold tracking-[-0.045em] text-balance text-ink sm:text-[1.65rem]">
               Caleb Wiedel
             </div>
-            <div className="mt-1 text-[0.8rem] text-brand-lime">Founder, Wiedel.me</div>
+            <div className="mt-1 text-[0.8rem] text-brand-purple">Founder, Wiedel.me</div>
             <p className="mt-[9px] text-[0.84rem] text-pretty text-muted sm:mt-3 sm:text-[0.92rem]">
               One person, start to finish. The person you talk to is the person doing the work.
             </p>

@@ -18,7 +18,7 @@ export default function Contact({ heading, body, footnote, serviceOptions, subje
       className="mx-auto grid w-[min(100%-40px,var(--container-site))] grid-cols-1 gap-[18px] py-[90px] md:grid-cols-[0.8fr_1.2fr]"
     >
       <Reveal className="rounded-(--radius-card) border border-line bg-white/2.5 p-8">
-        <div className="text-[0.76rem] font-bold tracking-[0.16em] text-brand-lime uppercase">Let&rsquo;s talk</div>
+        <div className="text-[0.76rem] font-bold tracking-[0.16em] text-brand-purple uppercase">Let&rsquo;s talk</div>
         <h2 className="mt-3 mb-[18px] font-display text-[2.5rem] leading-none tracking-[-0.06em] sm:text-[3rem]">
           {heading}
         </h2>
