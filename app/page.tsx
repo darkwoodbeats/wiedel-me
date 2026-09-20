@@ -6,7 +6,8 @@ import About from "@/components/About";
 import Process from "@/components/Process";
 import CarePlans from "@/components/CarePlans";
 import Projects from "@/components/Projects";
-import Testimonials from "@/components/Testimonials";
+// Testimonials are parked for now — uncomment this and the tag below to bring them back.
+// import Testimonials from "@/components/Testimonials";
 import Contact from "@/components/Contact";
 import { linkedinUrl, siteUrl } from "@/lib/site";
 
@@ -94,7 +95,7 @@ export default function Home() {
       <Process />
       <CarePlans />
       <Projects />
-      <Testimonials />
+      {/* <Testimonials /> */}
       <Contact
         heading="Got a project on your plate?"
         body="Tell me about the project, the deadline, and what you need from me. I'll get back to you with next steps and a quote."
