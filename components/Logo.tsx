@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { createSpring, createTimeline, stagger, svg } from "animejs";
-import { logoPaths, markPolygons, markViewBox } from "@/lib/logo-paths";
+import { logoDotPath, logoPaths, markPolygons, markViewBox } from "@/lib/logo-paths";
 
 type LogoProps = {
   /** Sets the lockup's height; both marks size themselves from it. */
@@ -49,7 +49,7 @@ export default function Logo({ className = "", mark = false, animated = false }:
 
     const drawables = svg.createDrawable(paths);
     const spring = createSpring({ stiffness: 120, damping: 13 });
-    // Below sm the mark is display:none, so the wordmark shouldn't wait on it.
+    // When the mark is display:none, the wordmark shouldn't wait on it.
     const leadIn = halves.some((half) => half.getBoundingClientRect().width > 0) ? 520 : 0;
 
     const timeline = createTimeline({ defaults: { ease: "inOut(2)" } });
@@ -78,10 +78,10 @@ export default function Logo({ className = "", mark = false, animated = false }:
       aria-label="Wiedel.me"
       className={`inline-flex items-center gap-[0.5em] ${className}`}
     >
-      {/* The full lockup crowds the header on phones, so the mark waits for room
-          and the wordmark carries the brand on its own down there. */}
+      {/* The mark only joins once the header has room for it beside the menu;
+          below that the wordmark carries the brand on its own. */}
       {mark && (
-        <svg viewBox={markViewBox} fill="currentColor" aria-hidden="true" className="hidden h-[125%] w-auto sm:block">
+        <svg viewBox={markViewBox} fill="currentColor" aria-hidden="true" className="hidden h-[125%] w-auto lg:block">
           {markPolygons.map((points) => (
             // fill-box keeps each half's transform origin on itself, not the viewBox.
             <polygon key={points} points={points} style={{ transformBox: "fill-box" }} />
@@ -90,7 +90,16 @@ export default function Logo({ className = "", mark = false, animated = false }:
       )}
       <svg viewBox="0 0 328.11 31.87" fill="currentColor" aria-hidden="true" className="block h-full w-auto">
         {logoPaths.map((d) => (
-          <path key={d} d={d} />
+          // The dot carries the brand color; setting `color` rather than `fill`
+          // means the intro's currentColor stroke draws it in purple too. The
+          // group-hover is a no-op at this color — left wired up for later.
+          <path
+            key={d}
+            d={d}
+            className={
+              d === logoDotPath ? "text-brand-purple transition-colors group-hover:text-brand-purple" : undefined
+            }
+          />
         ))}
       </svg>
     </span>
