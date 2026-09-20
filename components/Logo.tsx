@@ -1,30 +1,46 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { createTimeline, stagger, svg } from "animejs";
-import { logoPaths } from "@/lib/logo-paths";
+import { createSpring, createTimeline, stagger, svg } from "animejs";
+import { logoPaths, markPolygons, markViewBox } from "@/lib/logo-paths";
+
+type LogoProps = {
+  /** Sets the lockup's height; both marks size themselves from it. */
+  className?: string;
+  /** Show the "W" mark to the left of the wordmark. */
+  mark?: boolean;
+  /** Play the intro animation once on mount. */
+  animated?: boolean;
+};
 
 /**
- * Wiedel.me wordmark, inlined from public/img/wiedel-me-logo.svg. The source file
- * is filled near-black for print/light backgrounds; here it takes currentColor so
- * it reads on the dark theme and follows hover colors.
+ * Wiedel.me lockup, inlined from public/img/wiedel-me-logo.svg and
+ * wiedel-me-favicon.svg. Those files are filled near-black for print and light
+ * backgrounds; here everything takes currentColor so it reads on the dark theme
+ * and follows hover colors.
  *
- * With `animated`, anime.js draws each letter's outline in sequence and then fades
- * the fill in behind it. The paths start stroked-but-unfilled only once JS has
- * taken over (see the effect below), so without JS — and with reduced motion — the
- * wordmark just renders solid.
+ * With `animated`, anime.js runs a two-part intro: the mark's halves spring
+ * together from either side, then the wordmark draws itself letter by letter and
+ * the fill fades in behind the line. The hidden starting frame is applied by the
+ * effect below, so without JS — and with reduced motion — the lockup just renders
+ * solid.
  */
-export default function Logo({ className, animated = false }: { className?: string; animated?: boolean }) {
-  const ref = useRef<SVGSVGElement>(null);
+export default function Logo({ className = "", mark = false, animated = false }: LogoProps) {
+  const ref = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
     const root = ref.current;
     if (!animated || !root) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
+    const halves = Array.from(root.querySelectorAll<SVGPolygonElement>("polygon"));
     const paths = Array.from(root.querySelectorAll<SVGPathElement>("path"));
-    // Hidden fill + hairline stroke is the animation's starting frame, so it's set
-    // here rather than in the markup: if this effect never runs, nothing hides.
+
+    // The starting frame lives here rather than in the markup: if this effect
+    // never runs, nothing is left hidden.
+    halves.forEach((half) => {
+      half.style.opacity = "0";
+    });
     paths.forEach((path) => {
       path.style.fillOpacity = "0";
       path.style.stroke = "currentColor";
@@ -32,30 +48,51 @@ export default function Logo({ className, animated = false }: { className?: stri
     });
 
     const drawables = svg.createDrawable(paths);
-    const timeline = createTimeline({ defaults: { ease: "inOut(2)" } })
-      .add(drawables, { draw: ["0 0", "0 1"], duration: 900 }, stagger(70))
-      .add(paths, { fillOpacity: [0, 1], duration: 500 }, stagger(70, { start: 420 }))
+    const spring = createSpring({ stiffness: 120, damping: 13 });
+    // Below sm the mark is display:none, so the wordmark shouldn't wait on it.
+    const leadIn = halves.some((half) => half.getBoundingClientRect().width > 0) ? 520 : 0;
+
+    const timeline = createTimeline({ defaults: { ease: "inOut(2)" } });
+    // Mark first: the halves fly in from opposite sides and settle on a spring.
+    halves.forEach((half, i) => {
+      timeline.add(half, { opacity: [0, 1], x: [i === 0 ? -34 : 34, 0], ease: spring, duration: 700 }, i * 90);
+    });
+
+    timeline
+      // Wordmark second, overlapping the tail of the spring.
+      .add(drawables, { draw: ["0 0", "0 1"], duration: 900 }, stagger(70, { start: leadIn }))
+      .add(paths, { fillOpacity: [0, 1], duration: 500 }, stagger(70, { start: leadIn + 420 }))
       .add(paths, { strokeOpacity: [1, 0], duration: 400 }, "-=300");
 
     return () => {
       timeline.revert();
       // revert() restores anime's own properties; the starting frame is ours.
-      paths.forEach((path) => path.removeAttribute("style"));
+      [...halves, ...paths].forEach((el) => el.removeAttribute("style"));
     };
   }, [animated]);
 
   return (
-    <svg
+    <span
       ref={ref}
-      viewBox="0 0 328.11 31.87"
-      fill="currentColor"
       role="img"
       aria-label="Wiedel.me"
-      className={className}
+      className={`inline-flex items-center gap-[0.5em] ${className}`}
     >
-      {logoPaths.map((d) => (
-        <path key={d} d={d} />
-      ))}
-    </svg>
+      {/* The full lockup crowds the header on phones, so the mark waits for room
+          and the wordmark carries the brand on its own down there. */}
+      {mark && (
+        <svg viewBox={markViewBox} fill="currentColor" aria-hidden="true" className="hidden h-[125%] w-auto sm:block">
+          {markPolygons.map((points) => (
+            // fill-box keeps each half's transform origin on itself, not the viewBox.
+            <polygon key={points} points={points} style={{ transformBox: "fill-box" }} />
+          ))}
+        </svg>
+      )}
+      <svg viewBox="0 0 328.11 31.87" fill="currentColor" aria-hidden="true" className="block h-full w-auto">
+        {logoPaths.map((d) => (
+          <path key={d} d={d} />
+        ))}
+      </svg>
+    </span>
   );
 }

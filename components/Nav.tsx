@@ -15,7 +15,7 @@ export default function Nav() {
     <header className="sticky top-0 z-20 border-b border-white/6 bg-bg/76 backdrop-blur-[18px]">
       <div className="mx-auto flex h-[74px] w-[min(100%-40px,var(--container-site))] items-center justify-between">
         <BrandLink className="text-ink transition-colors hover:text-brand-purple">
-          <Logo animated className="block h-4 w-auto sm:h-[18px]" />
+          <Logo animated mark className="h-4 sm:h-[18px]" />
         </BrandLink>
 
         <nav className="hidden gap-6 text-[0.92rem] text-muted md:flex">

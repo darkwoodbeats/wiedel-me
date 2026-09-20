@@ -6,7 +6,7 @@ export default function Footer() {
     <footer className="border-t border-line pt-[30px] pb-[45px] text-[0.85rem] text-[#777d89]">
       <div className="mx-auto flex w-[min(100%-40px,var(--container-site))] flex-col justify-between gap-5 sm:flex-row sm:items-center">
         <div className="flex flex-col items-start gap-3">
-          <Logo className="block h-3.5 w-auto text-ink" />
+          <Logo className="h-3.5 text-ink" />
           <span>© {new Date().getFullYear()} Wiedel.me · Lincoln, Nebraska · Serving Omaha and beyond</span>
         </div>
         <nav className="flex flex-wrap gap-5">

@@ -10,3 +10,16 @@ export const logoPaths = [
   "M299.55,31.21h-4.9v-13.87h-11.7v13.87h-4.89v-13.87h-11.7v13.87h-4.9V12.44h32.16c3.26,0,5.92,2.65,5.92,5.92v12.85Z",
   "M328.11,31.21h-20.47c-3.26,0-5.92-2.65-5.92-5.92v-6.93c0-3.26,2.65-5.92,5.92-5.92h14.55c3.26,0,5.92,2.65,5.92,5.92v5.92h-21.49v2.04h21.49v4.9ZM323.21,19.37v-2.04h-16.59v2.04h16.59Z",
 ];
+
+/**
+ * The "W" mark from public/img/wiedel-me-favicon.svg, minus that file's dark
+ * circle — on the site's dark header the circle would be invisible anyway, so the
+ * two shapes take currentColor and read like the wordmark beside them.
+ */
+export const markPolygons = [
+  "67.61 72.69 28.13 72.69 86.07 173.04 105.81 138.85 71.07 78.69 67.61 72.69",
+  "144.01 72.69 81.46 72.69 139.4 173.04 197.34 72.69 144.01 72.69",
+];
+
+/** Tight box around those two shapes, so the mark isn't padded by the circle's margins. */
+export const markViewBox = "28.13 72.69 169.21 100.35";
