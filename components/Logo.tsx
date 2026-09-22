@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { createSpring, createTimeline, stagger, svg } from "animejs";
+import { createTimeline, spring, stagger, svg } from "animejs";
 import { logoDotPath, logoPaths, markPolygons, markViewBox } from "@/lib/logo-paths";
 
 type LogoProps = {
@@ -48,14 +48,14 @@ export default function Logo({ className = "", mark = false, animated = false }:
     });
 
     const drawables = svg.createDrawable(paths);
-    const spring = createSpring({ stiffness: 120, damping: 13 });
+    const settle = spring({ stiffness: 120, damping: 13 });
     // When the mark is display:none, the wordmark shouldn't wait on it.
     const leadIn = halves.some((half) => half.getBoundingClientRect().width > 0) ? 520 : 0;
 
     const timeline = createTimeline({ defaults: { ease: "inOut(2)" } });
     // Mark first: the halves fly in from opposite sides and settle on a spring.
     halves.forEach((half, i) => {
-      timeline.add(half, { opacity: [0, 1], x: [i === 0 ? -34 : 34, 0], ease: spring, duration: 700 }, i * 90);
+      timeline.add(half, { opacity: [0, 1], x: [i === 0 ? -34 : 34, 0], ease: settle, duration: 700 }, i * 90);
     });
 
     timeline

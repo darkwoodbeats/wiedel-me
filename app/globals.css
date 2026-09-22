@@ -81,3 +81,13 @@ body {
   -webkit-background-clip: text;
   color: transparent;
 }
+
+/* Chapter headings on the anniversary page rise out of a mask, one word at a
+   time. anime wraps each word in an inline-block with `overflow: clip`, and at
+   display leading that box cuts the descenders off — the "g" in "changed" loses
+   its tail. The padding pushes the clip edge below the baseline and the matching
+   negative margin keeps it out of the layout. */
+[data-chapter-heading] span:has(> [data-word]) {
+  padding-bottom: 0.16em;
+  margin-bottom: -0.16em;
+}

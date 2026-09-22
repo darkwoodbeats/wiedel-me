@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
-import Hero from "@/components/Hero";
-import Clients from "@/components/Clients";
+import Chapter from "@/components/decade/Chapter";
+import DecadeHero from "@/components/decade/DecadeHero";
+import LogoField from "@/components/decade/LogoField";
+import YearRail from "@/components/decade/YearRail";
 import ServiceGrid, { type Service } from "@/components/ServiceGrid";
 import About from "@/components/About";
 import Process from "@/components/Process";
@@ -9,6 +11,7 @@ import Projects from "@/components/Projects";
 // Testimonials are parked for now — uncomment this and the tag below to bring them back.
 // import Testimonials from "@/components/Testimonials";
 import Contact from "@/components/Contact";
+import { anniversaryYear, chapters, startYear, yearsInBusiness } from "@/lib/decade";
 import { linkedinUrl, siteUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -61,6 +64,9 @@ const jsonLd = {
   logo: `${siteUrl}/img/wiedel-me-logo.svg`,
   image: `${siteUrl}/img/CalebWiedel_square.jpg`,
   description: "Web development, design, IT help, and care plans for businesses and agencies.",
+  // Drawn from lib/decade.ts, so the page's story and its structured data can't
+  // drift apart. Correct it there, not here.
+  foundingDate: String(startYear),
   founder: { "@type": "Person", name: "Caleb Wiedel", sameAs: [linkedinUrl] },
   address: { "@type": "PostalAddress", addressLocality: "Lincoln", addressRegion: "NE", addressCountry: "US" },
   areaServed: [
@@ -70,6 +76,17 @@ const jsonLd = {
   sameAs: [linkedinUrl],
 };
 
+/**
+ * The anniversary home page, in two acts.
+ *
+ * Act one is the story: a single rail down the left gutter that fills as you
+ * scroll from {startYear} to {anniversaryYear}, with the year riding along
+ * beside it. Act two is the pitch — the same services, process, care plans, and
+ * work as before, unchanged, picking up where the story lands.
+ *
+ * The client marquee is gone from this page on purpose: chapter two shows every
+ * one of those logos at once, standing still, which is the point it is making.
+ */
 export default function Home() {
   return (
     <main id="top">
@@ -77,8 +94,17 @@ export default function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
       />
-      <Hero />
-      <Clients />
+
+      <DecadeHero />
+
+      <YearRail>
+        {chapters.map((chapter) => (
+          <Chapter key={chapter.id} chapter={chapter}>
+            {chapter.id === "work" && <LogoField />}
+          </Chapter>
+        ))}
+      </YearRail>
+
       <ServiceGrid
         id="services"
         title={
@@ -88,7 +114,7 @@ export default function Home() {
             for you.
           </>
         }
-        intro="Need a new website for your business, an extra developer for your agency, or someone to look after a site after launch? Start here."
+        intro={`After ${yearsInBusiness} years the list is short and it has not changed much. A new website for your business, an extra developer for your agency, or someone to look after a site once it is live.`}
         services={services}
       />
       <About />
@@ -97,7 +123,7 @@ export default function Home() {
       <Projects />
       {/* <Testimonials /> */}
       <Contact
-        heading="Got a project on your plate?"
+        heading="Here's to the next ten."
         body="Tell me about the project, the deadline, and what you need from me. I'll get back to you with next steps and a quote."
         footnote="Lincoln · Omaha · Remote"
         serviceOptions={serviceOptions}
