@@ -6,6 +6,13 @@
     application/javascript application/json image/svg+xml
 </IfModule>
 
+# HEAD requests go out uncompressed. Over HTTP/2 this host sends a malformed reply to a compressed
+# HEAD (Chrome logs ERR_CONTENT_DECODING_FAILED), and Next's router sends a HEAD before prefetching
+# a route. A HEAD has no body, so nothing is lost.
+<IfModule mod_setenvif.c>
+  SetEnvIfNoCase Request_Method "^HEAD$" no-gzip
+</IfModule>
+
 # --- Caching ----------------------------------------------------------------
 <IfModule mod_expires.c>
   ExpiresActive On
