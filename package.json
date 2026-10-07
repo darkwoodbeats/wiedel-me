@@ -1,30 +1,33 @@
 {
   "name": "wiedel-me",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint",
     "screenshots": "node scripts/capture-screenshots.mts",
-    "deploy": "next build && cd out && zip -qr ../wiedel-me-deploy.zip . -x \".DS_Store\" && cd .. && echo \"Built wiedel-me-deploy.zip — upload to public_html and Extract\"",
     "logos": "node scripts/capture-logos.mts"
   },
   "dependencies": {
-    "animejs": "^4.5.0",
-    "next": "^16.3.4",
-    "react": "^19.2.8",
-    "react-dom": "^19.2.8"
+    "@react-three/drei": "^10.7.8",
+    "@react-three/fiber": "^9.8.0",
+    "@react-three/postprocessing": "^3.1.2",
+    "next": "16.3.6",
+    "postprocessing": "^6.39.5",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "three": "^0.186.1"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4.3.3",
-    "@types/node": "^26.4.0",
-    "@types/react": "^19.2.18",
-    "@types/react-dom": "^19.2.5",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@types/three": "^0.186.0",
+    "eslint": "^9",
+    "eslint-config-next": "16.3.6",
     "playwright": "^1.62.1",
-    "postcss": "^8.5.26",
-    "tailwindcss": "^4.3.3",
-    "typescript": "^7.0.2"
+    "typescript": "^5"
   }
 }

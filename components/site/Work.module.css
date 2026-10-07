@@ -1,0 +1,212 @@
+/* Two columns on wide screens, the second set lower, so the grid reads as an editorial spread. */
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(56px, 8vh, 88px);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 800px) {
+  .grid {
+    --stagger: clamp(56px, 9vw, 140px);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: clamp(32px, 5vw, 80px);
+    row-gap: clamp(72px, 9vh, 112px);
+  }
+
+  .item:nth-child(even) {
+    translate: 0 var(--stagger);
+  }
+
+  /* Room for the lowered column, needed only when it holds the last project. */
+  .grid:has(> .item:nth-child(even):last-child) {
+    padding-bottom: var(--stagger);
+  }
+}
+
+.card {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* The screenshot, shown whole (it was captured at 16:10), in a hairline frame with faint CRT lines over it. */
+.frame {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border: 1px solid var(--hairline);
+  background: #0a0418;
+  transition:
+    border-color 0.45s ease,
+    box-shadow 0.45s ease;
+}
+
+.frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(180deg, transparent 0 2px, rgb(3 1 8 / 0.1) 2px 3px);
+  pointer-events: none;
+  transition: opacity 0.45s ease;
+}
+
+.shot {
+  display: block;
+  width: 100%;
+  height: auto;
+  transition: transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+/* Registration marks on opposite corners, as on the hero's primary action. They draw out on hover. */
+.frame::before {
+  content: "";
+  position: absolute;
+  inset: 10px;
+  z-index: 1;
+  background:
+    linear-gradient(var(--cyan), var(--cyan)) top left / 12px 1px no-repeat,
+    linear-gradient(var(--cyan), var(--cyan)) top left / 1px 12px no-repeat,
+    linear-gradient(var(--magenta), var(--magenta)) bottom right / 12px 1px no-repeat,
+    linear-gradient(var(--magenta), var(--magenta)) bottom right / 1px 12px no-repeat;
+  opacity: 0;
+  transform: scale(1.03);
+  transition:
+    opacity 0.45s ease,
+    transform 0.45s ease;
+  pointer-events: none;
+}
+
+.meta {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-areas:
+    "number host"
+    "title title"
+    "sector sector"
+    "description description";
+  align-items: baseline;
+  column-gap: 16px;
+  padding-top: 22px;
+}
+
+.number {
+  grid-area: number;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--cyan);
+  transition: color 0.35s ease;
+}
+
+.host {
+  grid-area: host;
+  justify-self: end;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--faint);
+  transition: color 0.35s ease;
+}
+
+.title {
+  grid-area: title;
+  margin: 14px 0 0;
+  font-family: var(--hero-font-display), "Arial Black", sans-serif;
+  font-size: clamp(1.2rem, 2vw, 1.65rem);
+  font-style: italic;
+  font-weight: 900;
+  line-height: 1.02;
+  text-transform: uppercase;
+  text-wrap: balance;
+  color: var(--ink);
+  transition: transform 0.45s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.sector,
+.description {
+  margin: 10px 0 0;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--muted);
+}
+
+.sector {
+  grid-area: sector;
+}
+
+.description {
+  grid-area: description;
+  max-width: 52ch;
+}
+
+/* Hover and keyboard focus: the screen lights up, the lines lift, the marks draw out. */
+@media (hover: hover) {
+  .card:hover .frame {
+    border-color: rgb(98 242 255 / 0.35);
+    box-shadow: 0 24px 70px -30px rgb(255 42 140 / 0.45);
+  }
+
+  .card:hover .frame::after {
+    opacity: 0;
+  }
+
+  .card:hover .frame::before {
+    opacity: 1;
+    transform: none;
+  }
+
+  .card:hover .shot {
+    transform: scale(1.025);
+  }
+
+  .card:hover .number {
+    color: var(--magenta);
+  }
+
+  .card:hover .host {
+    color: var(--cyan);
+  }
+
+  .card:hover .title {
+    transform: translateX(4px);
+  }
+}
+
+.card:focus-visible {
+  outline: none;
+}
+
+.card:focus-visible .frame {
+  outline: 1px solid var(--cyan);
+  outline-offset: 5px;
+}
+
+.card:focus-visible .frame::before {
+  opacity: 1;
+  transform: none;
+}
+
+.card:focus-visible .host {
+  color: var(--cyan);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shot,
+  .title,
+  .frame::before {
+    transition: none;
+  }
+
+  .card:hover .shot {
+    transform: none;
+  }
+
+  .card:hover .title {
+    transform: none;
+  }
+}

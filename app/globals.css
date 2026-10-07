@@ -1,83 +1,93 @@
-@import "tailwindcss";
-
-/* Design tokens — the old :root custom properties, now Tailwind theme keys.
-   Brand colors are namespaced so they don't shadow Tailwind's stock
-   `purple`/`cyan` palettes. */
-@theme {
-  --color-bg: #08090d;
-  --color-panel: #11131a;
-  --color-panel-2: #151822;
-  --color-ink: #f4f5f7;
-  --color-muted: #a7acb8;
-  --color-line: #272b37;
-  --color-brand-purple: #b388ff;
-  --color-brand-cyan: #5ce1e6;
-  /* Availability light — a mint that sits between cyan and "go" green. */
-  --color-status: #5cf0b0;
-  --color-error: #ff6b8a;
-
-  --font-sans: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
-
-  --container-site: 1180px;
-  --radius-card: 24px;
-
-  --animate-marquee: marquee 28s linear infinite;
-  --animate-blip: blip 2.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
-/* Radar ping: a ring swells out from the status light and fades. Grows via
-   inset rather than scale() so the 1px border stays hairline-thin. */
-@keyframes blip {
-  0% {
-    inset: 0;
-    opacity: 0.9;
-  }
-  75%,
-  100% {
-    inset: -9px;
-    opacity: 0;
-  }
-}
+:root {
+  /*
+   * Site-wide design tokens, first set for the hero (OutrunHero.module.css) and shared by every
+   * section, the header and the footer.
+   */
+  --gutter: clamp(20px, 5.2vw, 96px);
+  /*
+   * On stacked tablets, the centered column the hero's copy sits in: as wide as its object, but
+   * never narrower than its two actions side by side. The section heads and About follow it.
+   */
+  --stack-column: min(100%, max(min(86%, 44svh), 28.25rem));
+  --max-width: 1880px;
+  --ink: #f3eeff;
+  --muted: rgba(228, 218, 255, 0.7);
+  --faint: rgba(228, 218, 255, 0.42);
+  --hairline: rgba(228, 218, 255, 0.14);
+  --cyan: #62f2ff;
+  --magenta: #ff5cc0;
+  --bg: #030108;
+  /* The scene's own colors (config.ts PALETTE), reused so the title lives in the same light. */
+  --horizon: #ff2a8c;
+  --horizon-core: #ffc2ea;
+  --halo: #4a1670;
+  --sky-low: #1c0729;
+  --cyan-deep: #38e8ff;
+  --mono: var(--hero-font-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
 
-@keyframes marquee {
-  to {
-    transform: translateX(-50%);
-  }
+  /*
+   * The title treatments, shared by the headline and the header wordmark. The shadow offsets are
+   * in em, so they resolve against each element's own font size.
+   */
+  /* Chrome fill: white at the cap line, warming into the horizon's pink at the baseline. */
+  --title-fill: linear-gradient(
+    180deg,
+    #ffffff 8%,
+    var(--ink) 46%,
+    var(--horizon-core) 76%,
+    var(--magenta) 122%
+  );
+  /* Extrusion, back to front: a hot magenta edge, violet depth, a dark floor, then atmospheric glow. */
+  --title-depth: drop-shadow(0.012em 0.012em 0 var(--magenta))
+    drop-shadow(0.024em 0.03em 0 var(--halo)) drop-shadow(0.02em 0.026em 0 var(--sky-low))
+    drop-shadow(0 0.02em 0.24em rgb(255 42 140 / 0.3));
+  /* The brush script: airbrushed cyan, lifted off the chrome by a dark cast shadow, with a soft glow. */
+  --brush-fill: linear-gradient(180deg, #ffffff 0%, var(--cyan) 42%, var(--cyan-deep) 100%);
+  --brush-depth: drop-shadow(0.035em 0.045em 0 var(--sky-low))
+    drop-shadow(0 0 0.12em rgb(56 232 255 / 0.32));
 }
 
 html {
+  background: #030108;
+  color-scheme: dark;
   scroll-behavior: smooth;
-}
-
-/* Anchor targets stop below the 75px sticky header instead of underneath it. */
-main[id],
-main section[id] {
-  scroll-margin-top: 90px;
+  /* Anchor targets stop below the fixed header (StickyHeader) instead of underneath it. */
+  scroll-padding-top: 88px;
 }
 
 body {
-  background:
-    radial-gradient(circle at 80% 0%, rgb(92 225 230 / 0.12), transparent 32%),
-    radial-gradient(circle at 10% 20%, rgb(179 136 255 / 0.08), transparent 30%),
-    var(--color-bg);
-  color: var(--color-ink);
-  font-family: var(--font-sans);
+  margin: 0;
+  min-height: 100%;
+  background: #030108;
+  color: #f3eeff;
+  /* The hero clips its own overflow, and this guards the rest of the page. */
+  overflow-x: clip;
+  font-family: var(--hero-font-sans), system-ui, sans-serif;
   line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Scroll-reveal. The `.show` class is added by <Reveal> once the element
-   intersects the viewport; without JS the content stays visible. */
-@utility reveal-init {
+/* Reveal (components/site/Reveal.tsx): content fades up the first time it scrolls into view. */
+[data-reveal] {
+  transition:
+    opacity 0.7s ease,
+    transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+[data-reveal="hidden"] {
   opacity: 0;
-  transform: translateY(14px);
-  transition: 0.65s ease;
+  transform: translateY(18px);
 }
 
-/* Gradient wordmark used in the hero headline. */
-@utility text-gradient {
-  background: linear-gradient(100deg, #fff 15%, var(--color-brand-cyan) 48%, var(--color-brand-purple) 85%);
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }

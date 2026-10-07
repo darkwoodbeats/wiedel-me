@@ -1,0 +1,292 @@
+/*
+ * Shared layout and type for the sections below the hero. They speak the hero's language more
+ * quietly: the mono label with its lit rule (the hero's eyebrow), the display face set plain
+ * (the chrome and extrusion belong to the hero title alone), and the HUD's hairlines.
+ */
+
+.section {
+  position: relative;
+  padding-block: clamp(96px, 14vh, 176px);
+}
+
+/* A hairline between sections, brightest at its ends, like the hero's HUD rules. */
+.ruled::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: var(--gutter);
+  right: var(--gutter);
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    var(--hairline),
+    transparent 35%,
+    transparent 65%,
+    var(--hairline)
+  );
+}
+
+.container {
+  width: 100%;
+  max-width: 1320px;
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.head {
+  max-width: 62rem;
+  margin-bottom: clamp(48px, 8vh, 96px);
+}
+
+/* The hero's eyebrow: mono caps in cyan behind a short lit rule. */
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 0 0 clamp(18px, 2.6vh, 28px);
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 1.4;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--cyan);
+}
+
+.eyebrow::before {
+  content: "";
+  flex: none;
+  width: 32px;
+  height: 1px;
+  background: currentColor;
+  box-shadow: 0 0 8px currentColor;
+}
+
+/* The "//" in a label, dimmed like the HUD's. */
+.eyebrow b {
+  font-weight: 400;
+  opacity: 0.55;
+}
+
+.heading {
+  margin: 0;
+  font-family: var(--hero-font-display), "Arial Black", sans-serif;
+  /* In a .fit head, narrow screens fit the heading to its column instead (below). */
+  font-size: var(--fit-size, clamp(2rem, 6.2vw, 4.6rem));
+  font-style: italic;
+  font-weight: 900;
+  line-height: 0.92;
+  text-transform: uppercase;
+  text-wrap: balance;
+  color: var(--ink);
+}
+
+/* Heading lines break where the copy does on wide screens, and wrap freely on narrow ones. */
+.heading > span {
+  display: block;
+}
+
+/*
+ * The hero title's treatment for a section heading (ChromeHeading), from the site-wide
+ * tokens in globals.css: chrome lines with the hero's extrusion, then a brush-script line.
+ * Like the hero's .titleLoud, each line is padded so background-clip never trims the italic's
+ * overhang, and the margins cancel the padding.
+ */
+/* A chrome line. */
+.line {
+  display: block;
+  width: fit-content;
+  margin: 0 -0.1em 0 -0.14em;
+  padding: 0 0.1em 0 0.14em;
+  background: var(--title-fill);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: var(--title-depth);
+}
+
+/*
+ * A heading with a script is as wide as its longest line, and the last line's group (.lockup)
+ * spans that width, so the script lines up with the end of the longest line: under a single
+ * line's end, or tucked into the pocket beside a shorter last line.
+ */
+.chrome {
+  width: fit-content;
+}
+
+.lockup {
+  display: block;
+}
+
+/*
+ * Like the hero's "Since 2016": airbrushed cyan, tilted, crossing the foot of the chrome and
+ * running a little past the end. The script's loops and descenders reach well past its line
+ * box, and background-clip: text paints nothing outside the box, so the padding makes room for
+ * them; the margins net that padding out, so the layout doesn't move.
+ */
+.script {
+  display: block;
+  width: fit-content;
+  margin: -0.8em -0.2em -0.5em auto;
+  padding: 0.25em 0.12em 0.5em 0.4em;
+  font-family: var(--hero-font-brush), cursive;
+  font-size: 1.2em;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: 0;
+  text-transform: none;
+  background: var(--brush-fill);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: var(--brush-depth);
+  transform: rotate(-5deg);
+  transform-origin: 0 80%;
+}
+
+/* Under a single line there's no pocket to rise into: the script only grazes the capitals' foot. */
+.single .script {
+  margin-top: -0.6em;
+}
+
+/*
+ * A script that trails the last line (ChromeHeading's `trailLast`): the last line's group hugs that
+ * line rather than the longest, and the script starts at its end, its first stroke tucked under
+ * the last letter, then runs on into the pocket.
+ */
+.trailLast .lockup {
+  width: fit-content;
+}
+
+.trailLast .script {
+  margin-left: calc(100% - 0.12em);
+}
+
+.lede {
+  max-width: 50ch;
+  margin: clamp(20px, 3vh, 32px) 0 0;
+  font-size: clamp(1.05rem, 1.35vw, 1.22rem);
+  line-height: 1.6;
+  color: var(--muted);
+  text-wrap: pretty;
+}
+
+/*
+ * A head with its lede beside the heading on wide screens (SectionHead's `split`): the heading
+ * keeps its full width and the lede takes the far end of the row, its first line level with the
+ * top of the heading's capitals. When there isn't room for at least 18rem of lede beside the
+ * heading (a long heading on a mid-size screen), the lede wraps to its own line underneath instead.
+ */
+@media (min-width: 900px) {
+  .split {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: clamp(20px, 3vh, 32px) clamp(40px, 6vw, 96px);
+    max-width: none;
+  }
+
+  .split > .eyebrow {
+    flex-basis: 100%;
+    margin-bottom: 0;
+  }
+
+  .split > .heading {
+    flex: none;
+  }
+
+  /* The lede's line-height sets its letters a touch below its box top; the margin lifts them level with the capitals. */
+  .split > .lede {
+    flex: 1 1 18rem;
+    max-width: 38ch;
+    margin: -0.1em 0 0;
+  }
+}
+
+/*
+ * A head whose heading fills its width on narrow screens (.fit), as the hero title fills its
+ * column. The heading's lines break only where the copy does, so its width in em is fixed:
+ * FitHeading measures it (--heading-ems) and the font size follows from the head's width. Until
+ * then, and without JS, --fit-size is invalid and the heading keeps its usual size.
+ * --fit-overhang is how far the ink reaches past the heading's box, in em, so the ink itself
+ * meets the column's edge: a plain heading ends in a period, whose ink stops short of its box,
+ * and a chrome heading's script runs a little past it.
+ */
+.fit > .heading {
+  width: fit-content;
+  white-space: nowrap;
+}
+
+@media (max-width: 899px) {
+  .fit {
+    container-type: inline-size;
+  }
+
+  .fit > .heading {
+    --fit-size: calc(100cqi / (var(--heading-ems) + var(--fit-overhang, -0.05)));
+  }
+
+  .fit > .chrome {
+    --fit-overhang: 0.08;
+  }
+}
+
+/*
+ * Stacked tablets: a centered column as wide as the hero's copy (--stack-column), its text flush
+ * left, as in the hero. Phones give the head the full width, as they do the hero's copy.
+ */
+@media (min-width: 600px) and (max-width: 899px) {
+  .stack {
+    width: var(--stack-column);
+    margin-inline: auto;
+  }
+}
+
+/* A smaller heading for the subsections inside a section (Process, Care plans). */
+.subheading {
+  margin: 0;
+  font-family: var(--hero-font-display), "Arial Black", sans-serif;
+  font-size: clamp(1.6rem, 4vw, 2.9rem);
+  font-style: italic;
+  font-weight: 900;
+  line-height: 0.95;
+  text-transform: uppercase;
+  text-wrap: balance;
+  color: var(--ink);
+}
+
+.subheading > span {
+  display: block;
+}
+
+/* Small technical tags (capabilities, profile tags): mono caps in a hairline box. */
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tags li {
+  padding: 6px 10px;
+  border: 1px solid var(--hairline);
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+  line-height: 1.2;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

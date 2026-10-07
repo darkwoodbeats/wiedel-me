@@ -1,0 +1,18 @@
+/*
+ * The 404 lockup's measurements, taken the way the home title's were (.title in
+ * OutrunHero.module.css): ink widths in em in Hubot Sans Expanded Black Italic, the punch line
+ * measured without its tracking, and the brush line's ink (Mr Dafoe) tilted -5°. "YOU'VE DRIFTED" and
+ * "OFF THE GRID" sit within a few percent of "MAKING DREAMS" and "BECOME SEEN", so the letters
+ * come out the size of the home page's, and the stacked layouts' 1.016 allowance still holds.
+ */
+.lockup {
+  --lead-ink: 11.28; /* "YOU'VE DRIFTED" */
+  --main-ink: 9.35; /* "OFF THE GRID" */
+  /*
+   * Where the brush line ends, in punch-line em. "Error 404" has no swash reaching left the way the
+   * S of "Since 2016" does, so the home's 9.45 doesn't carry over: this was measured from the
+   * rendered ink so the brush stops where the home page's does, just inside the punch line's end.
+   */
+  --main-edge: 9.17;
+  --brush-ink: 4.4; /* "Error 404", tilted */
+}

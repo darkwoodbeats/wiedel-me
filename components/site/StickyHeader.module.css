@@ -1,0 +1,46 @@
+/*
+ * The fixed header bar (StickyHeader.tsx). It moves with `top` rather than a transform:
+ * a transform (or a backdrop-filter) on the bar would trap the phone menu's full-screen panel
+ * inside it, so the frosted backing lives on a pseudo-element instead.
+ */
+.bar {
+  position: fixed;
+  top: -120px;
+  left: 0;
+  right: 0;
+  z-index: 40;
+  visibility: hidden;
+  transition:
+    top 0.35s cubic-bezier(0.2, 0.7, 0.2, 1),
+    visibility 0s linear 0.35s;
+}
+
+.bar[data-shown="true"] {
+  top: 0;
+  visibility: visible;
+  transition:
+    top 0.35s cubic-bezier(0.2, 0.7, 0.2, 1),
+    visibility 0s;
+}
+
+.bar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: rgb(3 1 8 / 0.8);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+}
+
+/* A slimmer row than the hero's own header. */
+.bar > header {
+  padding-block: 14px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bar,
+  .bar[data-shown="true"] {
+    transition: none;
+  }
+}

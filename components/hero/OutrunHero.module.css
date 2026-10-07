@@ -1,0 +1,842 @@
+.hero {
+  /* Colors, faces and the title treatments are site-wide tokens (app/globals.css). */
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto 1fr;
+  min-height: 100vh;
+  min-height: 100svh;
+  /* The height the bottom HUD row used to take, so the object and copy stay where they were
+     tuned: centered together, with the actions above the horizon. */
+  padding-bottom: 57px;
+  overflow: hidden;
+  overflow: clip;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--hero-font-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------- Background layers (back to front) ---------- */
+
+/* Poster shown before WebGL fades in. It roughly matches the sky, horizon and floor. */
+.backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: -4;
+  background:
+    radial-gradient(40% 40% at 70% 42%, rgba(74, 22, 112, 0.3), transparent 70%),
+    linear-gradient(
+      180deg,
+      #020106 0%,
+      #0a0418 40%,
+      #1d0730 62%,
+      #4a0f47 70%,
+      #0a0410 72%,
+      #050209 100%
+    );
+}
+
+.canvas {
+  position: absolute;
+  inset: 0;
+  z-index: -3;
+  opacity: 0;
+  transition: opacity 1.8s cubic-bezier(0.2, 0.6, 0.2, 1);
+  pointer-events: none;
+}
+
+.canvas[data-ready="true"] {
+  opacity: 1;
+}
+
+.fallback {
+  position: absolute;
+  inset: 0;
+  z-index: -3;
+  width: 100%;
+  height: 100%;
+}
+
+/* CRT scanlines plus a slow refresh band. CSS keeps them crisp at every DPR and off the text. */
+.scanlines {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background: repeating-linear-gradient(180deg, transparent 0 2px, rgba(0, 0, 0, 0.3) 2px 3px);
+  opacity: 0.4;
+}
+
+.scanlines::after {
+  content: "";
+  position: absolute;
+  inset: -30% 0 auto;
+  height: 30%;
+  background: linear-gradient(180deg, transparent, rgba(190, 150, 255, 0.05), transparent);
+  animation: roll 12s linear infinite;
+}
+
+@keyframes roll {
+  to {
+    transform: translateY(433%);
+  }
+}
+
+/* Keeps the copy readable over the scene without boxing it in. */
+.scrim {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    linear-gradient(0deg, rgba(3, 1, 8, 0.7) 0%, rgba(3, 1, 8, 0) 16%),
+    linear-gradient(90deg, rgba(3, 1, 8, 0.74) 0%, rgba(3, 1, 8, 0.46) 32%, rgba(3, 1, 8, 0) 56%);
+}
+
+/* ---------- HUD ---------- */
+
+.hud,
+.stage {
+  width: 100%;
+  max-width: var(--max-width);
+  margin-inline: auto;
+}
+
+.hud {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 22px var(--gutter);
+  font-family: var(--mono);
+  font-size: 10.5px;
+  line-height: 1.2;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--faint);
+  white-space: nowrap;
+}
+
+.hud b {
+  font-weight: 400;
+  color: var(--cyan);
+  opacity: 0.75;
+}
+
+.hud::after {
+  content: "";
+  position: absolute;
+  left: var(--gutter);
+  right: var(--gutter);
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    var(--hairline),
+    transparent 35%,
+    transparent 65%,
+    var(--hairline)
+  );
+}
+
+.hudTop::after {
+  bottom: 0;
+}
+
+/* ---------- Site header: wordmark and navigation ---------- */
+
+/* Wordmark left, links flush right (the header row is a flex row with its ends pushed apart). */
+.siteHeader {
+  padding-block: 20px;
+}
+
+/*
+ * The wordmark, set like the headline: "WIEDEL" in the chrome display face, ".me" in the cyan
+ * brush script, tilted and laid over the foot of the L the way "Since 2016" crosses "SEEN".
+ */
+.logoLink {
+  display: inline-flex;
+  align-items: baseline;
+  font-size: 20px;
+  line-height: 1;
+  /* Undo the header's HUD tracking; the wordmark is set tight, like the headline. */
+  letter-spacing: 0;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.logoWord {
+  /* The italic overhangs its advance; pad the box so background-clip never trims it. */
+  margin-left: -0.14em;
+  padding: 0 0.1em 0 0.14em;
+  font-family: var(--hero-font-display), "Arial Black", sans-serif;
+  font-style: italic;
+  font-weight: 900;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  background: var(--title-fill);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: var(--title-depth);
+}
+
+/*
+ * Sized so the brush's lowercase x-height roughly matches the caps. It is pulled back over the L
+ * and dropped below the baseline, so the stroke crosses the foot of the capitals, as "Since 2016"
+ * crosses "SEEN".
+ */
+.logoBrush {
+  position: relative;
+  top: 0.17em;
+  margin-left: -0.6em;
+  padding: 0 0.12em 0 0.24em;
+  font-family: var(--hero-font-brush), cursive;
+  font-size: 2.1em;
+  font-weight: 400;
+  /* Just tall enough for the lowercase ink (baseline to x-height), so it doesn't deepen the header. */
+  line-height: 0.66;
+  text-transform: none;
+  background: var(--brush-fill);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: var(--brush-depth);
+  transform: rotate(-5deg);
+  transform-origin: 0 80%;
+  transition: filter 0.35s ease;
+}
+
+/* On hover the paint catches a little more light. */
+.logoLink:hover .logoBrush {
+  filter: drop-shadow(0.035em 0.045em 0 var(--sky-low))
+    drop-shadow(0 0 0.16em rgb(56 232 255 / 0.55));
+}
+
+.siteNav {
+  display: flex;
+  align-items: center;
+  gap: clamp(20px, 2.4vw, 36px);
+}
+
+/* Links speak in the sans face, like the hero's actions; the monospace stays for readouts. */
+.navLink {
+  position: relative;
+  padding-block: 6px;
+  font-family: var(--hero-font-sans), system-ui, sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-decoration: none;
+  color: var(--muted);
+  transition: color 0.35s ease;
+}
+
+/* A hairline draws in beneath the hovered link. */
+.navLink::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: linear-gradient(90deg, var(--cyan), var(--magenta));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.35s ease;
+}
+
+.navLink:hover {
+  color: var(--ink);
+}
+
+.navLink:hover::after {
+  transform: scaleX(1);
+}
+
+.logoLink:focus-visible,
+.navLink:focus-visible {
+  outline: 1px solid var(--cyan);
+  outline-offset: 5px;
+}
+
+/* Phones: the wordmark and a menu button (MobileNav) in place of the links. */
+@media (max-width: 767px) {
+  .siteNav {
+    display: none;
+  }
+
+  /* The open menu fills the screen beneath the header row; the wordmark and the rule stay on top. */
+  .logoLink,
+  .siteHeader::after {
+    z-index: 21;
+  }
+
+  .logoLink {
+    position: relative;
+  }
+}
+
+@media (max-width: 599px) {
+  .logoLink {
+    font-size: 17px;
+  }
+}
+
+/* ---------- Stage: copy + object slot ---------- */
+
+.stage {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  align-items: center;
+  gap: clamp(16px, 3vw, 56px);
+  padding: clamp(8px, 2vh, 24px) var(--gutter);
+}
+
+.copy {
+  max-width: 35rem;
+  /* Share the object's vertical center, which keeps the actions above the horizon. */
+  margin-bottom: 11svh;
+}
+
+.slot {
+  position: relative;
+  justify-self: center;
+  width: min(100%, 56svh);
+  aspect-ratio: 1;
+  /* Sit slightly above center so the horizon falls below the sphere. */
+  margin-bottom: 11svh;
+}
+
+/* ---------- Typography ----------
+ * Three voices, plus quiet running text:
+ *   01 display (Hubot Sans Expanded Black Italic): "MAKING DREAMS / BECOME SEEN", set like an 80s film title
+ *   02 brush (Mr Dafoe): the hand-painted "Since 2016" slashed across the title
+ *   03 technical (IBM Plex Mono): the eyebrow and HUD
+ *   running text (Mona Sans): the subtitle and actions
+ */
+
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 0 0 clamp(16px, 2.4vh, 26px);
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--cyan);
+}
+
+.eyebrow::before {
+  content: "";
+  flex: none;
+  width: 32px;
+  height: 1px;
+  background: currentColor;
+  box-shadow: 0 0 8px currentColor;
+}
+
+/*
+ * The title lockup: two lines of structured chrome display type with a hand-painted brush line
+ * painted across the foot of the second, so the title stops reading as one type system.
+ * Both display lines are sized to the same ink width (--title-width), so they read as one
+ * poster-style block: a smaller lead line over a large punch line. The divisors are each line's
+ * ink width in Hubot Sans Expanded Black Italic, in em ("MAKING DREAMS" 12.01, "BECOME SEEN" 9.49,
+ * measured without the punch line's tracking). They're fallbacks: a lockup with other words (the
+ * 404 page's) sets --lead-ink, --main-ink, --main-edge and --brush-ink to its own measurements.
+ */
+.title {
+  /*
+   * As wide as the room left of the sphere allows, less a 4rem gap: the stage's columns and the
+   * object's 56svh put the sphere's left edge at about 66vw - 24svh. 90svh keeps a short window's
+   * title in proportion, and 50rem holds once the stage stops widening (--max-width).
+   */
+  --title-width: clamp(17rem, min(66vw - 24svh - 4rem, 90svh), 50rem);
+  --title-lead: calc(var(--title-width) / var(--lead-ink, 12.01));
+  --title-main: calc(var(--title-width) / var(--main-ink, 9.49));
+  --brush-size: calc(var(--title-main) * 0.85);
+  /* Ends the brush line flush with the block's right edge (its ink, tilted, is ~4.76em wide). */
+  --brush-offset: calc(
+    var(--title-main) * var(--main-edge, 9.45) - var(--brush-size) * var(--brush-ink, 4.76)
+  );
+
+  position: relative;
+  margin: 0;
+  font-family: var(--hero-font-display), "Arial Black", sans-serif;
+  font-style: italic;
+  font-weight: 900;
+  line-height: 0.84;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* Each display line is a plain row; the chrome and depth live on its words (.titleLoud / .titleQuiet). */
+.titleLead,
+.titleMain {
+  display: block;
+  width: fit-content;
+}
+
+/* The lead line steps right, following the italic's slant, so the block leans toward the object. */
+.titleLead {
+  margin: 0 0 0.06em calc(var(--title-main) * 0.15);
+  font-size: var(--title-lead);
+}
+
+.titleMain {
+  font-size: var(--title-main);
+  letter-spacing: -0.01em;
+}
+
+/* The words that carry the meaning, "Dreams" and "Seen": chrome fill and extrusion. */
+.titleLoud {
+  display: inline-block;
+  /* The italic overhangs its advance on both sides; pad the box so background-clip never trims it. The margins cancel the padding, so spacing is unchanged. */
+  margin: 0 -0.1em 0 -0.14em;
+  padding: 0 0.1em 0 0.14em;
+  background: var(--title-fill);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: var(--title-depth);
+}
+
+/*
+ * The connecting words, "Making" and "Become", recede like unlit neon tubes: hollow outlines in
+ * the chrome's own pink with only a trace of glow and no extrusion. They keep their size and place,
+ * so the block holds its shape, but the eye skips them, and the title also reads "Dreams Seen Since 2016".
+ */
+.titleQuiet {
+  position: relative;
+  /* The page's own dark, half-opaque, so the grid doesn't show through the hollow letters. */
+  color: rgb(3 1 8 / 0.5);
+  -webkit-text-stroke: max(1.4px, 0.017em) rgb(255 194 234 / 0.78);
+}
+
+/*
+ * The neon glow lives on an unfilled copy of the word laid exactly over it, so only the tube
+ * (the stroke) emits light: a tight, hot halo hugging it, then a wide soft bloom in the horizon's
+ * pink. On the word itself the glow would also light up the dark backing inside the letters.
+ * The empty alt text keeps screen readers from reading the word twice.
+ */
+.titleQuiet::after {
+  content: attr(data-text) / "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  line-height: normal;
+  color: transparent;
+  pointer-events: none;
+  filter: drop-shadow(0 0 0.025em rgb(255 92 192 / 0.9))
+    drop-shadow(0 0 0.16em rgb(255 42 140 / 0.45));
+}
+
+@supports not (-webkit-text-stroke: 1px) {
+  .titleQuiet {
+    color: rgb(243 238 255 / 0.3);
+  }
+}
+
+/*
+ * "Dreams" carries a rare, irregular glint (timing lives in DreamsWord.tsx): a narrow highlight
+ * band over its chrome, parked off the left edge until it slides across now and then, and tiny
+ * four-point stars in the title's own white and horizon pink, sized in em so they scale with it.
+ */
+.dreams {
+  position: relative;
+  background:
+    linear-gradient(100deg, transparent 32%, rgb(255 255 255 / 0.9) 50%, transparent 68%) -1em 0 /
+      0.8em 100% no-repeat,
+    var(--title-fill);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.spark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0.34em;
+  height: 0.34em;
+  margin: -0.17em 0 0 -0.17em;
+  opacity: 0;
+  pointer-events: none;
+  filter: drop-shadow(0 0 0.03em #fff) drop-shadow(0 0 0.1em var(--horizon-core));
+}
+
+/* A soft core of light behind the four points, so even a tiny star reads as light, not a shape. */
+.spark::before {
+  content: "";
+  position: absolute;
+  inset: 20%;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff 0%, rgb(255 194 234 / 0.55) 38%, transparent 70%);
+}
+
+.spark svg {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  fill: #fff;
+}
+
+/*
+ * The brush line hangs under the punch line, flush right, like a painted signature. Its baseline
+ * sits 0.75 cap-sizes below the punch line's (which is 0.77 down that line's 0.84 line box), and a
+ * -5° lift raises its end so only the numerals touch the foot of the caps above. At line-height 1
+ * the brush baseline sits 0.78em down its box, with room above for the numerals and to the left
+ * for the swash of the S.
+ */
+.titleBrush {
+  position: relative;
+  display: block;
+  width: fit-content;
+  margin: calc(var(--title-main) * 0.68 - var(--brush-size) * 0.78) 0 -0.1em var(--brush-offset);
+  padding: 0 0.12em 0 0.24em;
+  font-family: var(--hero-font-brush), cursive;
+  font-size: var(--brush-size);
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0;
+  text-transform: none;
+  background: var(--brush-fill);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: var(--brush-depth);
+  transform: rotate(-5deg);
+  transform-origin: 0 80%;
+}
+
+/* Without text clipping, the transparent fills would hide the title, so fall back to solid colors. */
+@supports not ((-webkit-background-clip: text) or (background-clip: text)) {
+  .titleLoud {
+    background: none;
+    color: var(--ink);
+  }
+
+  .titleBrush {
+    background: none;
+    color: var(--cyan);
+  }
+
+  .logoWord {
+    background: none;
+    color: var(--ink);
+  }
+
+  .logoBrush {
+    background: none;
+    color: var(--cyan);
+  }
+}
+
+.subtitle {
+  max-width: 34ch;
+  margin: clamp(16px, 2.6vh, 28px) 0 0;
+  font-size: clamp(1.05rem, 1.25vw, 1.25rem);
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: 0.005em;
+  color: var(--ink);
+}
+
+/* ---------- Actions ---------- */
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: clamp(20px, 3.2vh, 36px);
+}
+
+.primary,
+.secondary {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  min-height: 48px;
+  padding: 0 22px;
+  border: 1px solid var(--hairline);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--ink);
+  transition:
+    background 0.35s ease,
+    border-color 0.35s ease,
+    box-shadow 0.35s ease,
+    color 0.35s ease;
+}
+
+/* Both actions sit on a dark, blurred base so they stay legible even where the horizon line runs behind them. */
+.primary,
+.secondary {
+  background-color: rgba(3, 1, 8, 0.5);
+  backdrop-filter: blur(6px);
+}
+
+.primary {
+  border-color: rgba(255, 255, 255, 0.2);
+  background-image: linear-gradient(90deg, rgba(56, 232, 255, 0.1), rgba(255, 60, 176, 0.12));
+}
+
+/* Registration marks on opposite corners. They spread slightly on hover. */
+.primary::before,
+.primary::after {
+  content: "";
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border: 0 solid;
+  transition: transform 0.35s ease;
+}
+
+.primary::before {
+  top: -4px;
+  left: -4px;
+  border-color: var(--cyan);
+  border-top-width: 1px;
+  border-left-width: 1px;
+}
+
+.primary::after {
+  right: -4px;
+  bottom: -4px;
+  border-color: var(--magenta);
+  border-right-width: 1px;
+  border-bottom-width: 1px;
+}
+
+.primary:hover {
+  border-color: rgba(255, 255, 255, 0.34);
+  background-image: linear-gradient(90deg, rgba(56, 232, 255, 0.18), rgba(255, 60, 176, 0.2));
+  box-shadow:
+    0 0 36px rgba(255, 60, 176, 0.16),
+    inset 0 0 20px rgba(56, 232, 255, 0.06);
+}
+
+.primary:hover::before {
+  transform: translate(-3px, -3px);
+}
+
+.primary:hover::after {
+  transform: translate(3px, 3px);
+}
+
+.arrow {
+  width: 22px;
+  height: 10px;
+  transition: transform 0.35s ease;
+}
+
+.primary:hover .arrow {
+  transform: translateX(4px);
+}
+
+.secondary {
+  color: var(--muted);
+}
+
+.secondary:hover {
+  border-color: rgba(255, 255, 255, 0.3);
+  color: var(--ink);
+}
+
+.primary:focus-visible,
+.secondary:focus-visible {
+  outline: 1px solid var(--cyan);
+  outline-offset: 5px;
+}
+
+@media (max-width: 1180px) {
+  .primary,
+  .secondary {
+    padding: 0 18px;
+    letter-spacing: 0.12em;
+  }
+}
+
+/* ---------- Stacked layout: tablets in portrait, phones ---------- */
+
+@media (max-width: 899px), (max-aspect-ratio: 1/1) {
+  .stage {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    align-content: space-between;
+    align-items: start;
+    gap: 0;
+  }
+
+  .slot {
+    grid-row: 1;
+    width: min(86%, 44svh);
+    margin: 1svh auto 0;
+  }
+
+  /* Leave room under the horizon glow before the copy starts. */
+  .copy {
+    grid-row: 2;
+    max-width: 40rem;
+    margin: clamp(20px, 4.5svh, 48px) 0 0;
+    padding-bottom: 4px;
+  }
+
+  .scrim {
+    background: linear-gradient(0deg, rgba(3, 1, 8, 0.6) 0%, rgba(3, 1, 8, 0) 30%);
+  }
+
+  /* The copy sits over the grid here, so it carries its own scrim, which follows it at any height. */
+  .copy {
+    position: relative;
+  }
+
+  .copy::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    inset: -28px calc(-1 * var(--gutter)) -24px;
+    background: linear-gradient(
+      180deg,
+      rgba(3, 1, 8, 0) 0,
+      rgba(3, 1, 8, 0.6) 96px,
+      rgba(3, 1, 8, 0.78) 100%
+    );
+    pointer-events: none;
+  }
+
+  /* Under the object, the lockup spans the text column rather than a share of the viewport. */
+  .title {
+    --title-width: min(calc((100vw - 2 * var(--gutter)) * 0.88), 30rem, 42svh);
+  }
+}
+
+/*
+ * Stacked tablets (phones fill the column instead): the copy is a centered column as wide as the
+ * object above it (the same size as .slot), but never narrower than the two actions side by side
+ * (28.25rem). The text stays flush left, the title fills the column edge to edge, and the scrim
+ * spans the full screen, so no edge shows in the grid.
+ */
+@media (min-width: 600px) and (max-width: 899px), (min-width: 600px) and (max-aspect-ratio: 1/1) {
+  .copy {
+    justify-self: center;
+    width: var(--stack-column);
+    max-width: none;
+    container-type: inline-size;
+  }
+
+  .copy::before {
+    inset: -28px calc(50% - 50vw) -24px;
+  }
+
+  /* The lead line's step right carries the lockup 1.6% past --title-width, so allow for it. */
+  .title {
+    --title-width: calc(100cqi / 1.016);
+  }
+
+  /* Each line spans the column rather than hugging its words. */
+  .titleLead,
+  .titleMain,
+  .titleBrush {
+    width: auto;
+  }
+}
+
+@media (max-width: 599px) {
+  /* The bottom HUD row's height at this size (see .hero). */
+  .hero {
+    padding-bottom: 43px;
+  }
+
+  .hud {
+    gap: 12px;
+    padding-block: 16px;
+    font-size: 9px;
+    letter-spacing: 0.14em;
+  }
+
+  .slot {
+    width: min(78%, 34svh);
+  }
+
+  .copy {
+    margin-top: clamp(16px, 4svh, 40px);
+  }
+
+  /* Phones: the lockup fills the column edge to edge. The extrusion is shallower and the glow is gone, so the letters stay crisp at this size. */
+  .title {
+    /* As on tablets, the lead line's step right carries the lockup 1.6% past --title-width. */
+    --title-width: calc((100vw - 2 * var(--gutter)) / 1.016);
+    --title-depth: drop-shadow(0.014em 0.016em 0 var(--magenta))
+      drop-shadow(0.022em 0.028em 0 var(--halo));
+  }
+
+  /* Drop the brush line's glow at this size. */
+  .title {
+    --brush-depth: drop-shadow(0.035em 0.045em 0 var(--sky-low));
+  }
+
+  /* Tighter tracking and a shorter rule keep the four disciplines on one line. */
+  .eyebrow {
+    gap: 10px;
+    margin-bottom: 12px;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+  }
+
+  .eyebrow::before {
+    width: 20px;
+  }
+
+  .subtitle {
+    margin-top: 16px;
+  }
+
+  .actions {
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .primary,
+  .secondary {
+    flex: 1 1 auto;
+    min-height: 44px;
+    padding: 0 16px;
+    letter-spacing: 0.14em;
+  }
+}
+
+@media (max-width: 359px) {
+  .eyebrow {
+    letter-spacing: 0.14em;
+  }
+
+  .eyebrow::before {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scanlines::after {
+    animation: none;
+  }
+
+  .spark {
+    display: none;
+  }
+
+  .canvas {
+    transition: none;
+  }
+}

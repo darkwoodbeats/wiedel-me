@@ -1,0 +1,58 @@
+.footer {
+  padding-block: 36px 48px;
+}
+
+.inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px 48px;
+  width: 100%;
+  max-width: 1320px;
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.brand {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.note {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 1.7;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 28px;
+}
+
+.links a {
+  padding-block: 6px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--muted);
+  transition: color 0.3s ease;
+}
+
+.links a:hover {
+  color: var(--ink);
+}
+
+.links a:focus-visible {
+  outline: 1px solid var(--cyan);
+  outline-offset: 4px;
+}

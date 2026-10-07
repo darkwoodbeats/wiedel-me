@@ -1,0 +1,49 @@
+/*
+ * The framed panel: a hairline box on a dark violet gradient, with the hero's horizon glowing along
+ * its foot. It holds the contact section, the "Who I work with" cards, and the care plan panel
+ * (off the page for now).
+ * Stacked on narrow screens; two columns on wide ones.
+ */
+.panel {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--panel-gap, clamp(40px, 6vh, 56px));
+  padding: var(--panel-padding, clamp(32px, 5vw, 64px));
+  overflow: hidden;
+  border: 1px solid var(--hairline);
+  background:
+    radial-gradient(70% 60% at 50% 115%, rgb(255 42 140 / 0.2), transparent 70%),
+    radial-gradient(50% 60% at 90% 0%, rgb(74 22 112 / 0.35), transparent 70%),
+    linear-gradient(180deg, #07030f, #0d0419);
+}
+
+.panel::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgb(255 42 140 / 0.7) 22%,
+    var(--horizon-core) 50%,
+    rgb(255 42 140 / 0.7) 78%,
+    transparent
+  );
+  box-shadow: 0 0 14px rgb(255 42 140 / 0.6);
+}
+
+/*
+ * A panel can set --panel-columns, --panel-gap and --panel-padding for its own layout; variables
+ * don't depend on which stylesheet loads last.
+ */
+@media (min-width: 960px) {
+  .panel {
+    grid-template-columns: var(--panel-columns, minmax(0, 1fr) minmax(0, 0.9fr));
+    align-items: center;
+    column-gap: clamp(48px, 6vw, 96px);
+  }
+}

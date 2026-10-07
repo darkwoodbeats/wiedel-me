@@ -1,0 +1,32 @@
+/* The page opening in place of the 3D hero: large type under a violet sky, above the horizon's glow. */
+.intro {
+  position: relative;
+  padding: clamp(160px, 24vh, 240px) 0 clamp(96px, 14vh, 160px);
+  background:
+    radial-gradient(70% 60% at 80% 0%, rgb(74 22 112 / 0.4), transparent 70%),
+    radial-gradient(90% 40% at 50% 100%, rgb(255 42 140 / 0.12), transparent 70%);
+}
+
+.heading {
+  max-width: 14em;
+  margin: 0;
+  font-family: var(--hero-font-display), "Arial Black", sans-serif;
+  font-size: clamp(2.4rem, 7.6vw, 6.4rem);
+  font-style: italic;
+  font-weight: 900;
+  line-height: 0.92;
+  text-transform: uppercase;
+  text-wrap: balance;
+  color: var(--ink);
+}
+
+.accent {
+  color: var(--horizon-core);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: clamp(28px, 4vh, 40px);
+}

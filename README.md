@@ -1,122 +1,85 @@
 # wiedel.me
 
-Personal services / portfolio site for Caleb Wiedel — built with **Next.js 16 (App Router)**,
-**React 19**, **TypeScript**, and **Tailwind CSS v4**.
+Caleb Wiedel's site: web, design, tech and sound for agencies and businesses in Lincoln, Omaha and
+beyond. Next.js 16 (App Router, static export), React 19, TypeScript and CSS Modules.
 
-## Getting started
+The home page opens on The Cube Within, an interactive, 80s outrun-styled WebGL hero (React Three
+Fiber). It is a visual interpretation of a UAP described by former U.S. Navy pilot Ryan Graves: a dark
+cube inside a clear sphere, with the cube's corners touching the sphere's inner surface.
 
 ```bash
 npm install
-npm run dev      # http://localhost:3000
-npm run build    # production build (fully static)
+npm run dev        # http://localhost:3000
 ```
 
-## Structure
+## Where things live
 
+```text
+app/                      the pages: home (page.tsx), music/, the 404 (not-found.tsx), robots.ts, sitemap.ts
+components/site/          the sections, header and footer around the hero
+lib/                      copy and data: projects.ts (Recent projects + logo strip), services, contact, music, site.ts
+scripts/                  project screenshot and logo capture (below)
+components/hero/
+  OutrunHero.tsx          Server Component: copy and CTAs; drop <OutrunHero /> into any page. Its HeroFrame (the scene around the copy) also frames the 404 page, app/not-found.tsx
+  OutrunHero.module.css   layout and breakpoints; [data-hero-slot] marks where the object goes
+  fonts.ts                Hubot Sans (title), Mr Dafoe (brush accent), Mona Sans (copy), IBM Plex Mono (metadata)
+  font-files/             every face, self-hosted: Hubot Sans Expanded Black Italic (overlaps merged, renamed), plus the latin files of Mona Sans, Mr Dafoe and IBM Plex Mono + their OFL license
+  HeroCanvasLoader.tsx    client island: WebGL check, lazy import (ssr: false), error fallback
+  StaticFallback.tsx      SVG version of the object for browsers without WebGL
+  HeroCanvas.tsx          <Canvas>, quality tiers, adaptive DPR, offscreen pause, reduced motion
+  HeroScene.tsx           scene graph + master clock
+  CameraRig.tsx           fits the sphere into the CSS slot; parallax, drift, scroll dolly
+  CubeSphere.tsx          the cube, the glass sphere, the contact flares
+  brandMark.ts            the wiedel.me mark, cut into the cube's three sky-facing faces (from public/brand/wiedel-mark.svg)
+  Aircraft.tsx            the small jets circling the object
+  cubeSphereShaders.ts    their GLSL
+  RetroGrid.tsx           animated, anti-aliased floor grid
+  Sky.tsx                 sky gradient, horizon glow, halo, stars
+  Mountains.tsx           distant low-poly ridge
+  Dust.tsx                sparse floating motes
+  Effects.tsx             bloom, chromatic aberration, tone mapping, grain, vignette
+  glsl.ts                 shared sky/environment functions used by every shader
+  uniforms.ts             shared uniforms
+  hooks.ts                media queries, pointer tracking, slot measuring, tier detection
+  config.ts               every visual setting (geometry, colors, motion, camera, effects, quality)
 ```
-app/
-  layout.tsx     Fonts (DM Sans + Space Grotesk via next/font), metadata, Nav + Footer
-  page.tsx       Home: sections for local businesses and agencies + JSON-LD
-  music/page.tsx DJ, lessons, and music production
-  icon.svg       Favicon (apple-icon.png is the iOS home-screen version)
-  globals.css    Tailwind import + design tokens (@theme) + custom utilities
-components/      Nav, Hero, ServiceGrid, About, Process, CarePlans, Clients, Projects, Testimonials, Contact, Footer, Logo
-lib/projects.ts  The project list rendered by the Projects section
-lib/testimonials.ts  Partner quotes; the section is hidden while empty
-lib/site.ts      Site URL, LinkedIn, Calendly link
-scripts/         Screenshot capture
-public/
-  img/           Portrait, Wiedel.me logo + favicon sources, client logos
-  screenshots/   Captured homepage screenshots, one per project slug
-```
 
-## Design tokens
+## Tuning
 
-Colors, fonts, container width, and the marquee animation live in `@theme` in
-`app/globals.css`, so they're available as Tailwind utilities (`text-brand-purple`,
-`border-line`, `font-display`, `w-[min(100%-40px,var(--container-site))]`, `animate-marquee`).
-Brand colors are namespaced `brand-*` so they don't shadow Tailwind's stock palettes.
+Edit `components/hero/config.ts`. The cube side comes from the sphere radius (`s = 2R/√3`), so
+changing `GEOMETRY.sphereRadius` keeps the vertices on the sphere. The object's size and position on
+screen come from the `.slot` rules in `OutrunHero.module.css`.
 
-## Projects section
+## Project screenshots and logos
 
-Cards are driven by `lib/projects.ts`. To add a project:
-
-1. Append an entry with `title`, `sector`, `url`, and a unique `slug`.
-2. Capture its screenshot:
+Projects live in `lib/projects.ts`, each with a unique `slug`; its card shows
+`public/screenshots/<slug>.jpg`, and a project with a `logo` also appears in the logo strip.
 
 ```bash
-npm run screenshots -- <slug>     # one site
-npm run screenshots               # re-capture all of them
+npm run screenshots              # capture every project's homepage
+npm run screenshots -- <slug>    # just one
+npm run logos                    # white logos for the strip, from each site's header
+npm run logos -- <slug>
 ```
 
-Screenshots are taken with headless Chromium at 1280×800 @2x and written to
-`public/screenshots/<slug>.jpg`. The script strips common cookie/consent overlays and
-falls back from `networkidle` to `load` for sites that never go idle.
+Both drive a browser through Playwright. The logo script re-renders each site's header logo as a
+white silhouette and skips any logo with a baked-in background; a mark whose detail is carried by
+color flattens into a blob, so those need a real knockout asset in `public/img/project_logos/`.
+`tsconfig.json` leaves `scripts/` out of the site's type-check, so editing a script can't break a deploy.
 
-## Client logo marquee
+## Build and deploy
 
-The marquee above the projects renders every project that has a `logo` set, so adding a
-logo to `lib/projects.ts` is all it takes to put a company in the strip.
+`next.config.ts` sets `output: "export"`, so `npm run build` writes a plain static site to `out/` and
+no Node process runs on the server. Pushing to `main` deploys: the GitHub Action
+(`.github/workflows/deploy.yml`) runs `npm ci` and `npm run build` on Node 22, then rsyncs `out/` to
+`public_html` on A Small Orange.
 
-```bash
-npm run logos             # all projects
-npm run logos -- runza    # just one
-```
-
-`scripts/capture-logos.mts` finds each site's header logo, re-renders it in isolation on a
-transparent page, and recolors it to a white silhouette at the original alpha. It rejects
-any logo whose source has a baked-in background — a silhouette of those is a white block —
-and lists what it skipped.
-
-Some logos can't be derived this way: any mark whose internal detail is carried by color
-rather than transparency flattens into a blob. Those need a real white/knockout asset from
-the client's brand kit, dropped into `public/img/project_logos/` and pointed at from
-`lib/projects.ts`.
-
-## Make the contact form live
-
-Create a form at [Formspree](https://formspree.io), then set the endpoint in `.env.local`:
-
-```
-NEXT_PUBLIC_FORMSPREE_ENDPOINT=https://formspree.io/f/your_form_id
-```
-
-Without it the form falls back to the placeholder endpoint and won't deliver.
-
-## Book-a-call buttons
-
-Set your Calendly link in `.env.local`:
-
-```
-NEXT_PUBLIC_CALENDLY_URL=https://calendly.com/your-name/intro-call
-```
-
-Unset, the "Book a call" buttons scroll to the contact form instead. Both values are
-baked in at build time, so rebuild after changing them.
-
-## Deploy (A Small Orange / any Apache host)
-
-The site is configured for static export (`output: "export"` in `next.config.ts`), so it
-builds to plain HTML/CSS/JS in `./out` and needs **no Node process on the server**.
-
-```bash
-npm run deploy      # builds, then zips ./out to wiedel-me-deploy.zip
-```
-
-Then in cPanel → File Manager → `public_html`: upload the zip, Extract, delete the zip.
-Everything inside `out/` goes at the document root — not the `out` folder itself.
-
-Or over the wire:
-
-```bash
-rsync -avz --delete out/ user@host:~/public_html/
-```
-
-`public/.htaccess` ships with the export and handles gzip, cache headers, the HTTPS
-redirect, and the 404 page.
-
-### Deploying somewhere with a Node runtime instead
-
-Remove `output: "export"` and `images.unoptimized` from `next.config.ts` and deploy to
-Vercel, Netlify, or Cloudflare Pages. That re-enables the built-in image optimizer, which
-is turned off here because a static export has no server to run it.
+- `public/.htaccess` ships in `out/`: gzip, cache headers, the HTTPS redirect and the 404 page.
+- `.env.production` is committed because the Action has no `.env.local`; without it the contact form
+  would ship disabled and the booking buttons would fall back to the form. Both values are public
+  anyway (they're in the page's JavaScript). `next dev` still reads `.env.local`.
+- Images skip the Next.js optimizer (`images.unoptimized`), since there is no server to run it. They
+  are served exactly as they sit in `public/`.
+- Every font is self-hosted, so the build needs no network beyond `npm ci`.
+- The rsync doesn't delete, so a file removed from the site stays on the server until it's removed by
+  hand.

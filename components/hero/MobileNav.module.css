@@ -1,0 +1,421 @@
+/*
+ * Phone navigation (MobileNav.tsx): a menu button in the header and the site links laid out as a
+ * full-screen title card. Colors and faces come from the hero's tokens (OutrunHero.module.css).
+ */
+
+/* Only below the breakpoint where the header's own links hide (OutrunHero.module.css). */
+.nav {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  /* Above the hero's copy; the wordmark and the header rule sit above this (z-index 21). */
+  .nav {
+    position: relative;
+    z-index: 20;
+    display: block;
+  }
+}
+
+/* ---------- Menu button ---------- */
+
+.button {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 44px;
+  height: 44px;
+  /*
+   * A full 44px target that takes no more height in the header than the wordmark does. The
+   * negative margins let it overhang the row and line the bars' right end up with the gutter.
+   */
+  margin: -12px -12px -12px 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ink);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* Registration marks on opposite corners, as on the hero's primary action. They spread on hover. */
+.button::before,
+.button::after {
+  content: "";
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  border: 0 solid;
+  opacity: 0.8;
+  transition: transform 0.35s ease;
+}
+
+.button::before {
+  top: 9px;
+  left: 7px;
+  border-color: var(--cyan);
+  border-top-width: 1px;
+  border-left-width: 1px;
+}
+
+.button::after {
+  right: 7px;
+  bottom: 9px;
+  border-color: var(--magenta);
+  border-right-width: 1px;
+  border-bottom-width: 1px;
+}
+
+.bars {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 18px;
+  height: 13.5px;
+  margin: -6.75px 0 0 -9px;
+  transition: transform 0.15s ease;
+}
+
+.bars > span {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 1.5px;
+  border-radius: 1px;
+  background: currentColor;
+  box-shadow: 0 0 6px rgb(255 92 192 / 0.45);
+  transition:
+    transform 0.32s cubic-bezier(0.2, 0.7, 0.2, 1),
+    opacity 0.2s ease,
+    box-shadow 0.35s ease;
+}
+
+/* Each bar sits a little right of the one below it, leaning with the display face's italic. */
+.bars > span:nth-child(1) {
+  top: 0;
+  transform: translateX(2px);
+}
+
+.bars > span:nth-child(2) {
+  top: 6px;
+}
+
+.bars > span:nth-child(3) {
+  top: 12px;
+  transform: translateX(-2px);
+}
+
+/* Open: the outer bars meet in the middle as an X and the middle one draws away. */
+.button[aria-expanded="true"] .bars > span:nth-child(1) {
+  transform: translateY(6px) rotate(45deg);
+}
+
+.button[aria-expanded="true"] .bars > span:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0.2);
+}
+
+.button[aria-expanded="true"] .bars > span:nth-child(3) {
+  transform: translateY(-6px) rotate(-45deg);
+}
+
+@media (hover: hover) {
+  .button:hover::before {
+    transform: translate(-2px, -2px);
+  }
+
+  .button:hover::after {
+    transform: translate(2px, 2px);
+  }
+
+  .button:hover .bars > span {
+    box-shadow: 0 0 8px rgb(255 92 192 / 0.75);
+  }
+}
+
+/* A press gives a small, quick give. */
+.button:active .bars {
+  transform: scale(0.9);
+}
+
+.button:focus-visible {
+  outline: 1px solid var(--cyan);
+  outline-offset: 0;
+}
+
+/* ---------- The menu ---------- */
+
+/*
+ * Full screen, beneath the header row (the wordmark and this button stay on top). It wipes down
+ * like the next frame of a title sequence, then the links rise in. Closing is a quick fade.
+ */
+.panel {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 96px var(--gutter) 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  /*
+   * The hero's night sky (the colors of its poster backdrop): violet haze high on the right,
+   * warming toward the horizon. Opaque, so the headline never ghosts through the links.
+   */
+  background:
+    radial-gradient(90% 50% at 82% 6%, rgb(74 22 112 / 0.3), transparent 70%),
+    linear-gradient(180deg, var(--bg) 0%, #0a0418 58%, #1d0730 100%);
+  /* Undo the header's HUD type. */
+  font-family: var(--hero-font-sans), system-ui, sans-serif;
+  letter-spacing: normal;
+  text-transform: none;
+  white-space: normal;
+  color: var(--ink);
+  opacity: 0;
+  visibility: hidden;
+  clip-path: inset(0 0 100% 0);
+  transition:
+    opacity 0.2s ease,
+    visibility 0s linear 0.2s,
+    clip-path 0s linear 0.2s;
+}
+
+.panel[data-open="true"] {
+  opacity: 1;
+  visibility: visible;
+  clip-path: inset(0);
+  transition:
+    opacity 0.24s ease,
+    visibility 0s,
+    clip-path 0.42s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(4px, 1.4svh, 14px);
+  /* Centered in the space between the header and the horizon. */
+  margin: auto 0;
+  padding: 0;
+  list-style: none;
+}
+
+.list > li {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+.panel[data-open="true"] .list > li {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 0.3s ease,
+    transform 0.36s cubic-bezier(0.2, 0.7, 0.2, 1);
+  transition-delay: calc(60ms + var(--i) * 35ms);
+}
+
+/* The number is a small technical label; the word is set in the title's display face. */
+.link {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  padding-block: 8px;
+  text-decoration: none;
+  color: inherit;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.index {
+  flex: none;
+  min-width: 2.6ch;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--cyan);
+  opacity: 0.75;
+  transition:
+    color 0.35s ease,
+    opacity 0.35s ease;
+}
+
+.label {
+  display: inline-block;
+  font-family: var(--hero-font-display), "Arial Black", sans-serif;
+  font-size: clamp(1.75rem, 8.4vw, 3rem);
+  font-style: italic;
+  font-weight: 900;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: rgb(243 238 255 / 0.88);
+  transition:
+    transform 0.35s ease,
+    color 0.35s ease,
+    text-shadow 0.35s ease;
+}
+
+/* The current page: full white with a trace of the horizon's glow, and a lit number underlined in neon. */
+.link[aria-current="page"] .label {
+  color: #fff;
+  text-shadow: 0 0 22px rgb(255 42 140 / 0.35);
+}
+
+.link[aria-current="page"] .index {
+  color: var(--magenta);
+  opacity: 1;
+  text-shadow: 0 0 8px rgb(255 92 192 / 0.8);
+}
+
+.link[aria-current="page"] .index::after {
+  content: "";
+  display: block;
+  width: 1.9ch;
+  height: 1px;
+  margin-top: 5px;
+  background: currentColor;
+  box-shadow: 0 0 6px currentColor;
+}
+
+/* Hover, focus or press: the word steps forward and catches the horizon's light. */
+.link:focus-visible .label,
+.link:active .label {
+  color: #fff;
+  text-shadow: 0 0 18px rgb(255 42 140 / 0.5);
+  transform: translateX(6px);
+}
+
+.link:focus-visible .index,
+.link:active .index {
+  color: var(--magenta);
+  opacity: 1;
+}
+
+@media (hover: hover) {
+  .link:hover .label {
+    color: #fff;
+    text-shadow: 0 0 18px rgb(255 42 140 / 0.5);
+    transform: translateX(6px);
+  }
+
+  .link:hover .index {
+    color: var(--magenta);
+    opacity: 1;
+  }
+}
+
+.link:focus-visible {
+  outline: 1px solid var(--cyan);
+  outline-offset: 4px;
+}
+
+/*
+ * The one echo of the scene: its neon horizon, low on the card, with the floor dark beneath it.
+ * The brand mark from the cube rests on the floor, centered, like a studio ident.
+ */
+.horizon {
+  position: relative;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: clamp(76px, 15svh, 140px);
+  margin: clamp(28px, 5svh, 56px) calc(-1 * var(--gutter)) 0;
+  padding-bottom: env(safe-area-inset-bottom);
+  background: linear-gradient(180deg, #0a0410, var(--bg) 85%);
+}
+
+.horizon::before,
+.horizon::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  pointer-events: none;
+}
+
+/* The line itself: hottest at the center, fading out toward the edges. */
+.horizon::before {
+  top: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgb(255 42 140 / 0.7) 22%,
+    var(--horizon-core) 50%,
+    rgb(255 42 140 / 0.7) 78%,
+    transparent
+  );
+  box-shadow: 0 0 12px rgb(255 42 140 / 0.55);
+  transform: scaleX(0.3);
+  opacity: 0;
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+/* Its glow, rising into the sky. */
+.horizon::after {
+  bottom: 100%;
+  height: 140px;
+  background: radial-gradient(55% 100% at 50% 100%, rgb(255 42 140 / 0.14), transparent 72%);
+}
+
+.panel[data-open="true"] .horizon::before {
+  transform: none;
+  opacity: 1;
+  transition:
+    transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) 0.1s,
+    opacity 0.3s ease 0.1s;
+}
+
+/* The brand mark engraved on the cube (public/brand/wiedel-mark.svg), painted in the horizon's pink. */
+.mark {
+  width: 26px;
+  aspect-ratio: 169.21 / 100.35;
+  background: linear-gradient(180deg, var(--horizon-core), var(--magenta));
+  -webkit-mask: url("/brand/wiedel-mark.svg") center / contain no-repeat;
+  mask: url("/brand/wiedel-mark.svg") center / contain no-repeat;
+  opacity: 0.55;
+}
+
+/* ---------- Reduced motion: the menu simply appears; nothing slides, wipes or staggers. ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .panel,
+  .panel[data-open="true"] {
+    clip-path: none;
+  }
+
+  .panel {
+    transition:
+      opacity 0.12s ease,
+      visibility 0s linear 0.12s;
+  }
+
+  .panel[data-open="true"] {
+    transition:
+      opacity 0.12s ease,
+      visibility 0s;
+  }
+
+  .list > li,
+  .panel[data-open="true"] .list > li,
+  .horizon::before,
+  .panel[data-open="true"] .horizon::before {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .button::before,
+  .button::after,
+  .bars,
+  .bars > span,
+  .label,
+  .index {
+    transition: none;
+  }
+}

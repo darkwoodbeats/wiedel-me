@@ -1,0 +1,136 @@
+/*
+ * The hero's world under the contact panel, in CSS and SVG rather than a second WebGL scene.
+ * Colors are the hero's (components/hero/config.ts, PALETTE). The horizon is the panel's foot:
+ * --floor-depth (set on the section) above the bottom. The glow sits on that horizon and fades out
+ * across the floor before the footer.
+ */
+.landscape {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background: radial-gradient(
+    70% var(--floor-depth) at 50% calc(100% - var(--floor-depth)),
+    rgb(255 42 140 / 0.16),
+    transparent 75%
+  );
+}
+
+/* ---------- Sky: night at the top, violet toward the horizon, the halo behind the panel ---------- */
+
+.sky {
+  position: absolute;
+  inset: 0 0 var(--floor-depth);
+  background:
+    radial-gradient(40% 55% at 50% 100%, rgb(74 22 112 / 0.5), transparent 70%),
+    linear-gradient(180deg, transparent, #0a0418 45%, #1c0729 82%, #4a0f47);
+}
+
+/* Stars, thinning out toward the horizon. Two tile sizes keep the pattern from showing. */
+.sky::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 12% 18%, rgb(255 255 255 / 0.7), transparent),
+    radial-gradient(1px 1px at 37% 62%, rgb(255 255 255 / 0.45), transparent),
+    radial-gradient(1.5px 1.5px at 68% 34%, rgb(200 236 255 / 0.8), transparent),
+    radial-gradient(1px 1px at 84% 76%, rgb(255 255 255 / 0.4), transparent),
+    radial-gradient(1px 1px at 53% 8%, rgb(255 220 245 / 0.6), transparent),
+    radial-gradient(1px 1px at 22% 44%, rgb(255 255 255 / 0.5), transparent),
+    radial-gradient(1.5px 1.5px at 76% 12%, rgb(255 255 255 / 0.65), transparent);
+  background-size:
+    360px 260px,
+    360px 260px,
+    360px 260px,
+    360px 260px,
+    530px 410px,
+    530px 410px,
+    530px 410px;
+  -webkit-mask-image: linear-gradient(180deg, #000, #000 40%, transparent 85%);
+  mask-image: linear-gradient(180deg, #000, #000 40%, transparent 85%);
+}
+
+/* Faint horizontal light streaks just above the horizon. */
+.sky::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 22%;
+  background: repeating-linear-gradient(180deg, transparent 0 7px, rgb(255 92 192 / 0.07) 7px 8px);
+  -webkit-mask-image: linear-gradient(180deg, transparent, #000);
+  mask-image: linear-gradient(180deg, transparent, #000);
+}
+
+/* ---------- Mountains: the ridge on the horizon, rim-lit by the glow behind it ---------- */
+
+.mountains {
+  position: absolute;
+  left: 0;
+  bottom: var(--floor-depth);
+  width: 100%;
+  height: clamp(70px, 12vh, 140px);
+  filter: drop-shadow(0 -1px 6px rgb(255 42 140 / 0.35));
+}
+
+/*
+ * ---------- Floor: a grid plane tilted away from the horizon ----------
+ * Lines in the hero's grid color (PALETTE.grid), one cell every 2.3s toward the viewer like the
+ * hero's (SCENE.grid speed / cellSize). Fogged out toward the horizon, faded into the footer and
+ * soft at the sides. The plane moves with a transform, so nothing repaints.
+ */
+.floor {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: var(--floor-depth);
+  overflow: hidden;
+  perspective: 600px;
+  perspective-origin: 50% 0;
+  -webkit-mask-image:
+    linear-gradient(180deg, transparent, #000 32%, #000 62%, transparent),
+    linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(180deg, transparent, #000 32%, #000 62%, transparent),
+    linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent);
+  mask-composite: intersect;
+}
+
+/* The plane starts one cell beyond the horizon, so moving a cell toward the viewer never uncovers
+   it, and ends before it would reach the viewer. Its pivot (transform-origin) is the horizon. */
+.floor::before {
+  content: "";
+  position: absolute;
+  top: -40px;
+  left: -100%;
+  right: -100%;
+  height: 580px;
+  background-image:
+    linear-gradient(rgb(216 34 143 / 0.75) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(216 34 143 / 0.75) 1px, transparent 1px);
+  background-size: 40px 40px;
+  background-position: 50% 0;
+  transform-origin: 50% 40px;
+  transform: rotateX(80deg);
+  animation: floor-run 2.3s linear infinite;
+  will-change: transform;
+}
+
+@keyframes floor-run {
+  from {
+    transform: rotateX(80deg) translateY(0);
+  }
+  to {
+    transform: rotateX(80deg) translateY(40px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .floor::before {
+    animation: none;
+  }
+}

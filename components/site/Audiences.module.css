@@ -1,0 +1,52 @@
+/*
+ * Who I work with: two audiences, each in its own framed panel (panel.module.css). Side by side on
+ * wide screens, stacked on narrow ones. It closes like a full section (section.module.css), so the
+ * rule above Work gets the usual gap.
+ */
+.audiences {
+  padding-block: clamp(56px, 9vh, 104px) clamp(96px, 14vh, 176px);
+}
+
+.groups {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(28px, 4vh, 40px);
+}
+
+@media (min-width: 720px) {
+  .groups {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: clamp(28px, 4vw, 56px);
+  }
+}
+
+/* The panel, sized for a heading and a line or two: one column, title over text, tighter padding. */
+.group {
+  --panel-columns: minmax(0, 1fr);
+  --panel-gap: 0;
+  --panel-padding: clamp(26px, 3vw, 40px);
+  /* Both cards share the taller one's height; packing to the top keeps their titles level. */
+  align-content: start;
+}
+
+/* The audience, set like the About facts' labels, a size up. */
+.title {
+  margin: 0;
+  font-family: var(--hero-font-display), "Arial Black", sans-serif;
+  font-size: clamp(1.5rem, 2.8vw, 2.25rem);
+  font-style: italic;
+  font-weight: 900;
+  line-height: 0.95;
+  text-transform: uppercase;
+  text-wrap: balance;
+  color: var(--ink);
+}
+
+.body {
+  max-width: 34ch;
+  margin: 12px 0 0;
+  font-size: clamp(1.05rem, 1.35vw, 1.22rem);
+  line-height: 1.6;
+  color: var(--muted);
+  text-wrap: pretty;
+}

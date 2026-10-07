@@ -1,48 +1,41 @@
 import type { Metadata, Viewport } from "next";
-import { DM_Sans, Space_Grotesk } from "next/font/google";
-import Footer from "@/components/Footer";
-import Nav from "@/components/Nav";
-import { siteUrl } from "@/lib/site";
+import { heroFontVariables } from "@/components/hero/fonts";
+import { Footer } from "@/components/site/Footer";
+import { siteName, siteUrl } from "@/lib/site";
 import "./globals.css";
 
-const dmSans = DM_Sans({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-dm-sans",
-  display: "swap",
-});
+const description =
+  "Caleb Wiedel: web design and development, graphic design, tech support, and DJ and music services for businesses and agencies in Lincoln, Omaha, and beyond.";
 
-const spaceGrotesk = Space_Grotesk({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-space-grotesk",
-  display: "swap",
-});
-
+// wiedel.me's metadata, carried over. The icons come from app/icon.svg, app/apple-icon.png and
+// app/favicon.ico; robots.txt and sitemap.xml from app/robots.ts and app/sitemap.ts.
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
     default: "Wiedel.me — Web Development & Design | Lincoln & Omaha, NE",
     template: "%s | Wiedel.me",
   },
-  description:
-    "Caleb Wiedel builds and looks after websites for local businesses in Lincoln and Omaha, and for agencies from Nashville to Kansas City: web development, design, IT help, and care plans from $99/month.",
+  description,
+  authors: [{ name: "Caleb Wiedel" }],
   openGraph: {
     type: "website",
-    siteName: "Wiedel.me",
+    siteName,
     locale: "en_US",
+  },
+  // The large card, so X shows app/opengraph-image.jpg full width (it falls back to og:image).
+  twitter: {
+    card: "summary_large_image",
   },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0a0a0f",
+  themeColor: "#030108",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${dmSans.variable} ${spaceGrotesk.variable}`}>
-      <body className="antialiased">
-        <Nav />
+    <html lang="en" className={heroFontVariables}>
+      <body>
         {children}
         <Footer />
       </body>

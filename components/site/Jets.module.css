@@ -1,0 +1,9 @@
+/*
+ * The jets' WebGL layer (hero/JetsCanvas.tsx) over the contact panel: the panel's wrapper plus a
+ * margin on each side for the jets to swing wide (the inset comes from PANEL_JETS.margin, inline).
+ * Clicks and taps pass straight through to the panel.
+ */
+.jets {
+  position: absolute;
+  pointer-events: none;
+}
