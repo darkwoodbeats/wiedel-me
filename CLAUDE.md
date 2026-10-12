@@ -12,3 +12,7 @@
   is missing conversion text. No call-to-action was detected. Adding one can make the image more
   clickable." The image is `app/opengraph-image.jpg` (1200x630, also the X large card): a capture of
   the home hero without its buttons. Update its alt text, `app/opengraph-image.alt.txt`, to match.
+- **Case studies for the top sites in the portfolio.** Which sites count as "top" is still to be
+  chosen. The portfolio is the Work section (`components/site/Work.tsx`), fed by `lib/projects.ts`;
+  each card now links straight out to the live site. `Project` already has an unused `description`
+  field that the card renders once it's set.
