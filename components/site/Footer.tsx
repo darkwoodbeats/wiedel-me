@@ -1,4 +1,4 @@
-import { FOOTER_LINKS, siteName } from "@/lib/site";
+import { FOOTER_LINKS } from "@/lib/site";
 import styles from "./Footer.module.css";
 import s from "./section.module.css";
 import { Wordmark } from "./SiteHeader";
@@ -11,7 +11,8 @@ export function Footer() {
         <div className={styles.brand}>
           <Wordmark />
           <p className={styles.note}>
-            © {new Date().getFullYear()} {siteName} — Web · Design · Tech · Sound | Lincoln & Omaha, NE
+            Web · Design · Tech · Sound
+            <br />© {new Date().getFullYear()} Caleb Wiedel | Lincoln & Omaha, NE
           </p>
         </div>
         <nav aria-label="Footer" className={styles.links}>
