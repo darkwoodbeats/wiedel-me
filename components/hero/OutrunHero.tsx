@@ -57,16 +57,16 @@ export default function OutrunHero() {
         Web {"//"} Design {"//"} Tech {"//"} Sound
       </p>
       <h1 id="hero-title" className={styles.title}>
-        {/* "Making" and "Become" recede into outlines, so the loud words also read as "Dreams Seen Since 2016". */}
+        {/* "From" and "to" recede into outlines, so the loud words also read as "Dreams Seen Since 2016". */}
         <span className={styles.titleLead}>
-          <span className={styles.titleQuiet} data-text="Making">
-            Making
+          <span className={styles.titleQuiet} data-text="From">
+            From
           </span>{" "}
           <DreamsWord />
         </span>{" "}
         <span className={styles.titleMain}>
-          <span className={styles.titleQuiet} data-text="Become">
-            Become
+          <span className={styles.titleQuiet} data-text="to">
+            to
           </span>{" "}
           <span className={styles.titleLoud}>Seen</span>
         </span>{" "}

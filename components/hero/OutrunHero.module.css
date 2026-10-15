@@ -313,7 +313,7 @@
 
 /* ---------- Typography ----------
  * Three voices, plus quiet running text:
- *   01 display (Hubot Sans Expanded Black Italic): "MAKING DREAMS / BECOME SEEN", set like an 80s film title
+ *   01 display (Hubot Sans Expanded Black Italic): "FROM DREAMS / TO SEEN", set like an 80s film title
  *   02 brush (Mr Dafoe): the hand-painted "Since 2016" slashed across the title
  *   03 technical (IBM Plex Mono): the eyebrow and HUD
  *   running text (Mona Sans): the subtitle and actions
@@ -346,7 +346,7 @@
  * painted across the foot of the second, so the title stops reading as one type system.
  * Both display lines are sized to the same ink width (--title-width), so they read as one
  * poster-style block: a smaller lead line over a large punch line. The divisors are each line's
- * ink width in Hubot Sans Expanded Black Italic, in em ("MAKING DREAMS" 12.01, "BECOME SEEN" 9.49,
+ * ink width in Hubot Sans Expanded Black Italic, in em ("FROM DREAMS" 9.99, "TO SEEN" 5.56,
  * measured without the punch line's tracking). They're fallbacks: a lockup with other words (the
  * 404 page's) sets --lead-ink, --main-ink, --main-edge and --brush-ink to its own measurements.
  */
@@ -357,13 +357,16 @@
    * title in proportion, and 50rem holds once the stage stops widening (--max-width).
    */
   --title-width: clamp(17rem, min(66vw - 24svh - 4rem, 90svh), 50rem);
-  --title-lead: calc(var(--title-width) / var(--lead-ink, 12.01));
-  --title-main: calc(var(--title-width) / var(--main-ink, 9.49));
-  --brush-size: calc(var(--title-main) * 0.85);
+  --title-lead: calc(var(--title-width) / var(--lead-ink, 9.99));
+  --title-main: calc(var(--title-width) / var(--main-ink, 5.56));
+  /* The brush line's size against the punch line: 0.58 starts its ink under the foot of SEEN's first E. */
+  --brush-size: calc(var(--title-main) * var(--brush-scale, 0.58));
   /* Ends the brush line flush with the block's right edge (its ink, tilted, is ~4.76em wide). */
   --brush-offset: calc(
-    var(--title-main) * var(--main-edge, 9.45) - var(--brush-size) * var(--brush-ink, 4.76)
+    var(--title-main) * var(--main-edge, 5.65) - var(--brush-size) * var(--brush-ink, 4.76)
   );
+  /* The lead line's step right (.titleLead) carries the lockup this far past --title-width. */
+  --title-overhang: calc(1 + 0.15 / var(--main-ink, 5.56));
 
   position: relative;
   margin: 0;
@@ -407,7 +410,7 @@
 }
 
 /*
- * The connecting words, "Making" and "Become", recede like unlit neon tubes: hollow outlines in
+ * The connecting words, "From" and "to", recede like unlit neon tubes: hollow outlines in
  * the chrome's own pink with only a trace of glow and no extrusion. They keep their size and place,
  * so the block holds its shape, but the eye skips them, and the title also reads "Dreams Seen Since 2016".
  */
@@ -488,16 +491,18 @@
 
 /*
  * The brush line hangs under the punch line, flush right, like a painted signature. Its baseline
- * sits 0.75 cap-sizes below the punch line's (which is 0.77 down that line's 0.84 line box), and a
- * -5° lift raises its end so only the numerals touch the foot of the caps above. At line-height 1
- * the brush baseline sits 0.78em down its box, with room above for the numerals and to the left
- * for the swash of the S.
+ * sits 0.88 of its own size below the punch line's (which is 0.07 punch-line em above the foot of
+ * that line's 0.84 line box), so the numerals cross the foot of the caps above by the same share
+ * of their height at any brush size, and a -5° lift raises its end so only the numerals touch.
+ * At line-height 1 the brush baseline sits 0.78em down its box, with room above for the numerals
+ * and to the left for the swash of the S.
  */
 .titleBrush {
   position: relative;
   display: block;
   width: fit-content;
-  margin: calc(var(--title-main) * 0.68 - var(--brush-size) * 0.78) 0 -0.1em var(--brush-offset);
+  margin: calc(var(--brush-size) * (0.88 - 0.78) - var(--title-main) * 0.07) 0 -0.1em
+    var(--brush-offset);
   padding: 0 0.12em 0 0.24em;
   font-family: var(--hero-font-brush), cursive;
   font-size: var(--brush-size);
@@ -740,9 +745,9 @@
     inset: -28px calc(50% - 50vw) -24px;
   }
 
-  /* The lead line's step right carries the lockup 1.6% past --title-width, so allow for it. */
+  /* The lead line's step right carries the lockup past --title-width, so allow for it. */
   .title {
-    --title-width: calc(100cqi / 1.016);
+    --title-width: calc(100cqi / var(--title-overhang));
   }
 
   /* Each line spans the column rather than hugging its words. */
@@ -776,8 +781,8 @@
 
   /* Phones: the lockup fills the column edge to edge. The extrusion is shallower and the glow is gone, so the letters stay crisp at this size. */
   .title {
-    /* As on tablets, the lead line's step right carries the lockup 1.6% past --title-width. */
-    --title-width: calc((100vw - 2 * var(--gutter)) / 1.016);
+    /* As on tablets, allow for the lead line's step right past --title-width. */
+    --title-width: calc((100vw - 2 * var(--gutter)) / var(--title-overhang));
     --title-depth: drop-shadow(0.014em 0.016em 0 var(--magenta))
       drop-shadow(0.022em 0.028em 0 var(--halo));
   }
