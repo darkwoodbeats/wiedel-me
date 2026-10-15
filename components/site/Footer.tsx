@@ -11,7 +11,7 @@ export function Footer() {
         <div className={styles.brand}>
           <Wordmark />
           <p className={styles.note}>
-            © {new Date().getFullYear()} {siteName} · Lincoln, Nebraska · Serving Omaha and beyond
+            © {new Date().getFullYear()} {siteName} — Web · Design · Tech · Sound | Lincoln & Omaha, NE
           </p>
         </div>
         <nav aria-label="Footer" className={styles.links}>

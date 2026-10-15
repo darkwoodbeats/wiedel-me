@@ -12,7 +12,7 @@ const description =
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Wiedel.me — Web Development & Design | Lincoln & Omaha, NE",
+    default: "Wiedel.me — Web · Design · Tech · Sound | Lincoln & Omaha, NE",
     template: "%s | Wiedel.me",
   },
   description,
