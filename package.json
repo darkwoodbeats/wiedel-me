@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "screenshots": "node scripts/capture-screenshots.mts",
-    "logos": "node scripts/capture-logos.mts"
+    "logos": "node scripts/capture-logos.mts",
+    "og-image": "node scripts/capture-og-image.mts"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.8",
