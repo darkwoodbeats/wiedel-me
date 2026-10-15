@@ -25,7 +25,7 @@ export const profile = {
 
 export const about = {
   label: "What you can count on",
-  title: ["Taking Dreams", "To Done"],
+  title: ["From Dreams", "To Done"],
   script: "Since ’91",
   paragraphs: [
     "I’m Caleb, a web developer and designer in Lincoln, Nebraska. I design your site and I build it, so it looks as good as it works. You’ll always know where things stand, and if something’s off, you’ll hear it from me early, not on launch day.",

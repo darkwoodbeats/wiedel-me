@@ -153,14 +153,18 @@
 /*
  * A script that trails the last line (ChromeHeading's `trailLast`): the last line's group hugs that
  * line rather than the longest, and the script starts at its end, its first stroke tucked under
- * the last letter, then runs on into the pocket.
+ * the last letter, then runs on into the pocket. The script sits in a second column, so the group,
+ * and with it the heading FitHeading measures, is as wide as the line and the script together.
  */
 .trailLast .lockup {
+  display: grid;
+  grid-template-columns: auto auto;
   width: fit-content;
 }
 
 .trailLast .script {
-  margin-left: calc(100% - 0.12em);
+  grid-area: 2 / 2;
+  margin-left: -0.12em;
 }
 
 .lede {
