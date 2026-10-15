@@ -11,7 +11,7 @@ export function Footer() {
         <div className={styles.brand}>
           <Wordmark />
           <p className={styles.note}>
-            <span>Web · Design · Tech · Sound</span>
+            <span>Web · Design · Sound · Tech</span>
             <span>© {new Date().getFullYear()} Caleb Wiedel | Lincoln & Omaha, NE</span>
           </p>
         </div>

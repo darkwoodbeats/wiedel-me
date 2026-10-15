@@ -20,7 +20,7 @@ export const profile = {
   role: "Founder, Wiedel.me",
   pitch: "Web developer, designer, and DJ. One person, from first sketch to final mix.",
   photo: { src: "/img/CalebWiedel_square.jpg", width: 800, height: 800, alt: "Caleb Wiedel" },
-  tags: ["Web", "Design", "Tech", "Sound"],
+  tags: ["Web", "Design", "Sound", "Tech"],
 };
 
 export const about = {
@@ -29,7 +29,7 @@ export const about = {
   script: "Since ’91",
   paragraphs: [
     "I’m Caleb, a web developer and designer in Lincoln, Nebraska. I design your site and I build it, so it looks as good as it works. You’ll always know where things stand, and if something’s off, you’ll hear it from me early, not on launch day.",
-    "I handle the tech behind the scenes too, from computers to networks. And when the laptop closes, I’m behind the decks, DJing weddings and events and mixing music. Same care, turned up loud.",
+    "When the laptop closes, I’m behind the decks, DJing weddings and events and mixing music. Same care, turned up loud. And when the music stops, I’m still the one keeping your tech running, from computers to networks.",
   ],
   facts: [
     { label: "Direct line", body: "No account managers, no juniors. The person on the call is the person doing the work." },

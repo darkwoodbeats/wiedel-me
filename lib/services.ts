@@ -24,7 +24,7 @@ export const homeServices: ServicesCopy = {
   title: ["Here’s what", "I can do"],
   script: "for you.",
   intro:
-    "Need a new website, a fresh logo, help with your tech, or a DJ for your next event? Whatever it is, you work directly with me from start to finish.",
+    "Need a new website, a fresh logo, a DJ for your next event, or help with your tech? Whatever it is, you work directly with me from start to finish.",
   services: [
     {
       num: "01 / WEB",
@@ -39,17 +39,17 @@ export const homeServices: ServicesCopy = {
       chips: ["Logos", "Branding", "Print", "Social"],
     },
     {
-      num: "03 / TECH",
-      title: "IT Help & Tech Support",
-      body: "Practical IT for small businesses and offices: computers, software, networks, setup, and migrations.",
-      chips: ["Small business", "Networks", "Setup", "Migrations"],
-    },
-    {
-      num: "04 / SOUND",
+      num: "03 / SOUND",
       title: "DJ & Music Production",
       body: "DJ and MC services for weddings and events, DJ lessons, and recording, mixing, and mastering for your music.",
       chips: ["Weddings & events", "DJ lessons", "Recording", "Mixing & mastering"],
       link: { label: "See DJ & music →", href: "/music/" },
+    },
+    {
+      num: "04 / TECH",
+      title: "IT Help & Tech Support",
+      body: "Practical IT for small businesses and offices: computers, software, networks, setup, and migrations.",
+      chips: ["Small business", "Networks", "Setup", "Migrations"],
     },
   ],
 };

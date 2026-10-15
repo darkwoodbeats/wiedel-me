@@ -5,14 +5,14 @@ import { siteName, siteUrl } from "@/lib/site";
 import "./globals.css";
 
 const description =
-  "Caleb Wiedel: web design and development, graphic design, tech support, and DJ and music services for businesses and agencies in Lincoln, Omaha, and beyond.";
+  "Caleb Wiedel: web design and development, graphic design, DJ and music services, and tech support for businesses and agencies in Lincoln, Omaha, and beyond.";
 
 // wiedel.me's metadata, carried over. The icons come from app/icon.svg, app/apple-icon.png and
 // app/favicon.ico; robots.txt and sitemap.xml from app/robots.ts and app/sitemap.ts.
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Wiedel.me — Web · Design · Tech · Sound | Lincoln & Omaha, NE",
+    default: "Wiedel.me — Web · Design · Sound · Tech | Lincoln & Omaha, NE",
     template: "%s | Wiedel.me",
   },
   description,

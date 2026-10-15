@@ -1,6 +1,6 @@
 # wiedel.me
 
-Caleb Wiedel's site: web, design, tech and sound for agencies and businesses in Lincoln, Omaha and
+Caleb Wiedel's site: web, design, sound and tech for agencies and businesses in Lincoln, Omaha and
 beyond. Next.js 16 (App Router, static export), React 19, TypeScript and CSS Modules.
 
 The home page opens on The Cube Within, an interactive, 80s outrun-styled WebGL hero (React Three

@@ -54,7 +54,7 @@ export default function OutrunHero() {
   return (
     <HeroFrame titleId="hero-title">
       <p className={styles.eyebrow}>
-        Web {"//"} Design {"//"} Tech {"//"} Sound
+        Web {"//"} Design {"//"} Sound {"//"} Tech
       </p>
       <h1 id="hero-title" className={styles.title}>
         {/* "From" and "to" recede into outlines, so the loud words also read as "Dreams Seen Since 2016". */}

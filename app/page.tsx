@@ -24,7 +24,7 @@ const jsonLd = {
   url: siteUrl,
   logo: `${siteUrl}/img/wiedel-me-logo.svg`,
   image: `${siteUrl}/img/CalebWiedel_square.jpg`,
-  description: "Web design and development, graphic design, tech support, and DJ and music services for businesses and agencies.",
+  description: "Web design and development, graphic design, DJ and music services, and tech support for businesses and agencies.",
   founder: { "@type": "Person", name: "Caleb Wiedel", sameAs: [linkedinUrl] },
   address: { "@type": "PostalAddress", addressLocality: "Lincoln", addressRegion: "NE", addressCountry: "US" },
   areaServed: [
