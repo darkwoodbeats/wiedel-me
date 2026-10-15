@@ -95,6 +95,12 @@ section.contact {
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--muted);
+  transition: color 0.25s ease;
+}
+
+/* The label lights up with its field's focus border. */
+.field:focus-within label {
+  color: var(--cyan);
 }
 
 .field input,
