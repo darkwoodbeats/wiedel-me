@@ -61,7 +61,7 @@ export const projects: Project[] = [
   { title: "Sagewell", sector: "Orthopaedics & Urgent Care", url: "https://sagewellmed.com", slug: "sagewellmed", logo: "/img/project_logos/sagewellmed.png", logoWidth: 393, inWork: false },
   { title: "Rembolt Ludtke", sector: "Nebraska Law Firm", url: "https://remboltlawfirm.com", slug: "remboltlawfirm", logo: "/img/project_logos/remboltlawfirm.png", logoWidth: 492 },
   { title: "Avidist", sector: "Guns, Ammo & Outdoor News", url: "https://avidist.com", slug: "avidist", inWork: false },
-  { title: "Hughes Brothers", sector: "Electric Utility Products", url: "https://www.hughesbros.com", slug: "hughesbros", logo: "/img/project_logos/hughesbros.png", logoWidth: 441, inStrip: false },
+  { title: "Hughes Brothers", sector: "Electric Utility Products", url: "https://www.hughesbros.com", slug: "hughesbros", logo: "/img/project_logos/hughesbros.png", logoWidth: 441, inWork: false, inStrip: false },
   { title: "Nebraska Civic Engagement Table", sector: "Community Nonprofit", url: "https://www.nebraskatable.org", slug: "nebraskatable", logo: "/img/project_logos/nebraskatable.svg", logoWidth: 270 },
   { title: "Electric Drive Transportation Association", sector: "Transportation Electrification", url: "https://electricdrive.org", slug: "electricdrive", logo: "/img/project_logos/electricdrive.png", logoWidth: 247, inWork: false, inStrip: false },
   { title: "York General", sector: "Healthcare System", url: "https://www.yorkgeneral.org", slug: "yorkgeneral", logo: "/img/project_logos/yorkgeneral.png", logoWidth: 636 },
