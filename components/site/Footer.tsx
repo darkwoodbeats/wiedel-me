@@ -1,9 +1,13 @@
+import nav from "@/components/hero/MobileNav.module.css";
 import { FOOTER_LINKS } from "@/lib/site";
 import styles from "./Footer.module.css";
 import s from "./section.module.css";
 import { Wordmark } from "./SiteHeader";
 
-/** The wiedel.me footer: wordmark, where the work happens, and the secondary links. */
+/**
+ * The wiedel.me footer: wordmark, where the work happens, and the secondary links, signed off with
+ * the brand mark centered beneath, as at the foot of the phone menu.
+ */
 export function Footer() {
   return (
     <footer className={styles.footer}>
@@ -31,6 +35,7 @@ export function Footer() {
           })}
         </nav>
       </div>
+      <span className={`${nav.mark} ${styles.mark}`} aria-hidden="true" />
     </footer>
   );
 }
