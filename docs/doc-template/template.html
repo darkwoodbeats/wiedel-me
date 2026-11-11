@@ -52,11 +52,12 @@
   table.cols4 td:first-child strong { color: var(--ink); }
 
   /* Quote components, for an HTML body (see example-quote.html). */
-  /* Quote details under the title, no table: who it's for on the left, quote number and date on the right. */
-  .quote-meta { display: flex; justify-content: space-between; align-items: flex-start; gap: 24pt;
+  /* Quote details under the title, no table: "Prepared for" and "Prepared by" side by side on the left, both
+     left-aligned, and the quote number and date pushed to the right edge, right-aligned. */
+  .quote-meta { display: flex; align-items: flex-start; gap: 40pt;
                 margin: 2pt 0 4pt 0; font-size: 10pt; line-height: 1.5; }
   .quote-meta p { margin: 0; }
-  .quote-meta .numbers { text-align: right; }
+  .quote-meta .numbers { margin-left: auto; text-align: right; }
   .meta-label { font-weight: 600; color: var(--muted); }
   table.scope td:first-child { width: 24%; font-weight: 600; }
   table.price th:last-child, table.price td:last-child { width: 22%; text-align: right; white-space: nowrap; }

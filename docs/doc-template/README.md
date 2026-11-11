@@ -12,9 +12,10 @@ site's own fonts: Wiedel Display for the title and small caps headings, and Mona
 - **`##` / `<h2>`:** section headings, in Mona Sans ExtraBold, in the case you type.
 - **`###` / `<h3>`:** smaller headings such as "Start now" or "Next", in Wiedel Display, all caps.
 - **Tables:** near-black header row with white text, and every other body row shaded.
-- **No date/author byline under the title.** Quotes put a plain details block under the title instead, with
-  "Prepared for" (name, business, email) on the left and the quote number and issue date on the right (see
-  `example-quote.html`). The letterhead already says who it's from. The expiry date goes in the Terms section.
+- **No date/author byline under the title.** Quotes put a plain details block under the title instead:
+  "Prepared for" (client name, business, email) and "Prepared by" (Caleb Wiedel, Wiedel.me, caleb@wiedel.me)
+  side by side on the left, both left-aligned, and the quote number and issue date on the right, right-aligned
+  (see `example-quote.html`). No table. The expiry date goes in the Terms section.
 
 ## Files
 
@@ -62,7 +63,7 @@ To check the pages, look at the PDF, or render them with `swift $T/render.swift 
 
 | Markup | Use |
 |---|---|
-| `<div class="quote-meta">` | Details under the title: Prepared for (left), quote number and issued date (right) |
+| `<div class="quote-meta">` | Details under the title: Prepared for and Prepared by (left), quote number and issued date (right) |
 | `<table class="scope">` | Item / Details (first column bold) |
 | `<table class="price">` | Item / Price, amounts right-aligned; `<tr class="total">` for the total row |
 | `<table class="timeline">` | When / What happens |
