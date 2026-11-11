@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Email Signature</title>
+<style>
+  /* This page is only the preview and copy tool. The signature itself is the <template> below: a table with
+     inline styles and Arial, because mail apps drop <style> blocks and web fonts. */
+  :root { --ink: #1c1c1c; --muted: #5f5f5f; --line: #e3e3e3; --bg: #f4f4f2; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+         font: 15px/1.5 -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif; }
+  main { max-width: 760px; margin: 0 auto; padding: 40px 16px 64px; }
+  h1 { font-size: 26px; line-height: 1.2; margin: 0 0 6px; }
+  h2 { font-size: 16px; margin: 32px 0 8px; }
+  .intro { color: var(--muted); margin: 0 0 24px; }
+  .mail { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 22px 24px 26px; overflow-x: auto; }
+  .mail .body { color: #333; font: 14px/1.5 Arial, Helvetica, sans-serif; margin: 0 0 18px; }
+  .actions { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+  button { font: inherit; font-size: 14px; padding: 7px 14px; border-radius: 7px; cursor: pointer;
+           border: 1px solid var(--ink); background: var(--ink); color: #fff; }
+  button.secondary { background: #fff; color: var(--ink); border-color: #c9c9c9; }
+  button:focus-visible { outline: 2px solid #3b82f6; outline-offset: 2px; }
+  .status { font-size: 14px; color: var(--muted); align-self: center; }
+  details { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 14px 18px; margin: 0 0 10px; }
+  summary { cursor: pointer; font-weight: 600; }
+  details ol { margin: 10px 0 2px; padding-left: 1.3em; }
+  details li { margin: 0 0 4px; }
+  .note { font-size: 14px; color: var(--muted); margin: 0 0 8px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Wiedel.me email signature</h1>
+  <p class="intro">For caleb@wiedel.me. The logo loads from wiedel.me, which works in every mail app. Press
+  <strong>Copy signature</strong> and paste it into your mail app's signature settings.</p>
+
+  <div class="mail"><p class="body">Thanks, talk soon.</p><div id="preview"></div></div>
+  <div class="actions" id="actions"></div>
+
+  <h2>Install it</h2>
+  <details open>
+    <summary>Gmail (web)</summary>
+    <ol>
+      <li>Settings (the gear) &gt; <strong>See all settings</strong> &gt; General &gt; <strong>Signature</strong> &gt; Create new.</li>
+      <li>Click in the signature box and paste. If you send as more than one address, pick caleb@wiedel.me above the box.</li>
+      <li>Under Signature defaults, pick it for new emails and for replies.</li>
+      <li>Scroll to the bottom and press <strong>Save Changes</strong>.</li>
+    </ol>
+  </details>
+  <details>
+    <summary>Webmail (Roundcube, on your host's cPanel)</summary>
+    <ol>
+      <li>Open <strong>Settings</strong> &gt; <strong>Identities</strong> and pick caleb@wiedel.me.</li>
+      <li>In Signature, switch on <strong>HTML</strong> so the box shows formatting, click in it and paste.</li>
+      <li>Press <strong>Save</strong>. If the formatting didn't come through, press Copy HTML instead and paste it into
+        the editor's Source code view (the &lt;&gt; button).</li>
+    </ol>
+  </details>
+  <details>
+    <summary>Apple Mail (Mac)</summary>
+    <ol>
+      <li>Mail &gt; Settings &gt; <strong>Signatures</strong>, pick the caleb@wiedel.me account and press +.</li>
+      <li>Untick <strong>Always match my default message font</strong>, or Mail restyles the text.</li>
+      <li>Click in the right-hand box, select its placeholder text and paste.</li>
+    </ol>
+  </details>
+  <details>
+    <summary>Outlook</summary>
+    <ol>
+      <li>Settings (or File &gt; Options &gt; Mail) &gt; <strong>Signatures</strong> &gt; New.</li>
+      <li>Paste, set it for new messages and replies, and save.</li>
+    </ol>
+  </details>
+  <p class="note">A few mail apps (mainly Outlook on Windows) hold back web images until the reader allows them. Until
+  then the logo's place shows "Wiedel.me" in bold, and your name and details always show, because they're text.</p>
+  <p class="note">The logo is <code>https://wiedel.me/email/wiedel-me-logo-black.png</code>. Every email you send points
+  at it, so keep that file on the site. To change the wording, edit the template at the bottom of this file. To rebuild
+  the logo, run <code>node docs/email-signature/build.mjs</code> and deploy the site.</p>
+</main>
+
+<!-- The signature. The logo URL is absolute so it works in anyone's inbox; its alt text is styled to stand in for
+     the logo when a mail app holds back images. -->
+<template id="signature"><table cellpadding="0" cellspacing="0" border="0" role="presentation" style="border-collapse:collapse;"><tr><td style="padding:0 0 9px 0;border-bottom:2px solid #1c1c1c;"><a href="https://wiedel.me" style="text-decoration:none;color:#1c1c1c;"><img src="https://wiedel.me/email/wiedel-me-logo-black.png" width="150" height="22" alt="Wiedel.me" style="display:block;width:150px;height:22px;border:0;font-family:'Arial Black',Arial,Helvetica,sans-serif;font-size:17px;line-height:22px;font-weight:900;font-style:italic;color:#1c1c1c;"></a></td></tr><tr><td style="padding:10px 0 0 0;font-family:Arial,Helvetica,sans-serif;"><div style="font-size:12px;line-height:18px;color:#5f5f5f;"><span style="font-size:14px;font-weight:bold;color:#1c1c1c;">Caleb Wiedel</span>&nbsp;&nbsp;Founder &middot; Web Developer &amp; Designer</div><div style="font-size:12px;line-height:18px;color:#1c1c1c;padding-top:2px;"><a href="mailto:caleb@wiedel.me" style="color:#1c1c1c;text-decoration:none;">caleb@wiedel.me</a><span style="color:#b5b5b5;">&nbsp;&nbsp;|&nbsp;&nbsp;</span><a href="https://wiedel.me" style="color:#1c1c1c;text-decoration:none;">wiedel.me</a><span style="color:#b5b5b5;">&nbsp;&nbsp;|&nbsp;&nbsp;</span><a href="https://www.linkedin.com/in/cbwiedel" style="color:#1c1c1c;text-decoration:none;">LinkedIn</a><span style="color:#b5b5b5;">&nbsp;&nbsp;|&nbsp;&nbsp;</span><span style="color:#5f5f5f;">Lincoln, Nebraska</span></div></td></tr></table></template>
+
+<script>
+  // The preview loads the logo from this repo's public/email/, so it shows before the site is deployed.
+  // The copies keep the https://wiedel.me/email/ URL.
+  const LIVE = 'https://wiedel.me/email/';
+  const LOCAL = '../../public/email/';
+  const markup = () => document.getElementById('signature').innerHTML.trim();
+  // The plain-text copy, for apps that won't take formatting: one line per block.
+  const plain = (html) => new DOMParser()
+    .parseFromString(html.replace(/<br\s*\/?>|<\/div>|<\/tr>/g, '\n'), 'text/html').body.textContent
+    .replace(/ /g, ' ').split('\n').map((l) => l.trim()).filter(Boolean).join('\n');
+
+  async function copyRich(html) {
+    try {
+      await navigator.clipboard.write([new ClipboardItem({
+        'text/html': new Blob([html], { type: 'text/html' }),
+        'text/plain': new Blob([plain(html)], { type: 'text/plain' }),
+      })]);
+      return true;
+    } catch {
+      // Older browsers: select a rendered copy and use the legacy copy command.
+      const box = document.createElement('div');
+      box.contentEditable = 'true';
+      box.style.cssText = 'position:fixed;left:-9999px;top:0;';
+      box.innerHTML = html;
+      document.body.appendChild(box);
+      const range = document.createRange();
+      range.selectNodeContents(box);
+      const sel = getSelection(); sel.removeAllRanges(); sel.addRange(range);
+      const ok = document.execCommand('copy');
+      sel.removeAllRanges(); box.remove();
+      return ok;
+    }
+  }
+  async function copyText(text) {
+    try { await navigator.clipboard.writeText(text); return true; }
+    catch {
+      const t = document.createElement('textarea'); t.value = text; document.body.appendChild(t); t.select();
+      const ok = document.execCommand('copy'); t.remove(); return ok;
+    }
+  }
+
+  document.getElementById('preview').innerHTML = markup().replaceAll(LIVE, LOCAL);
+  const bar = document.getElementById('actions');
+  const status = Object.assign(document.createElement('span'), { className: 'status' });
+  const btn = (label, cls, fn) => {
+    const b = Object.assign(document.createElement('button'), { type: 'button', textContent: label, className: cls });
+    b.addEventListener('click', async () => {
+      status.textContent = (await fn(markup())) ? 'Copied. Paste it into your signature settings.' : 'Copy failed. Select the signature above and copy it.';
+    });
+    return b;
+  };
+  bar.append(btn('Copy signature', '', copyRich), btn('Copy HTML', 'secondary', copyText), status);
+</script>
+</body>
+</html>

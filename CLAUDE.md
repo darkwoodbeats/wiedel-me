@@ -6,6 +6,12 @@ Wiedel.me client documents (Letter PDFs on the wiedel.me letterhead, in the site
 `docs/doc-template/`. Read its `README.md` first. The quote layout is in `example-quote.html`. Client documents go
 in the client's own project folder, never in this public repo.
 
+## Email signatures
+
+`docs/email-signature/signatures.html` has the caleb@wiedel.me signature with copy buttons; see its `README.md`. Its
+logo loads from `https://wiedel.me/email/wiedel-me-logo-black.png` (`public/email/`). Sent emails point at that URL,
+so never move, rename or delete it.
+
 ## Planned work
 
 - **"CONTACT" calls to action between every section on the home page.** The home page
