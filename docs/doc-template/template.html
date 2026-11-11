@@ -39,11 +39,12 @@
   /* Tables: near-black header row with white text; body in subtle zebra rows, shaded first (as in Wetware docs). */
   table { width: 100%; border-collapse: collapse; margin: 6pt 0 12pt 0; font-size: 9.5pt; line-height: 1.4; }
   th, td { text-align: left; vertical-align: top; padding: 5pt 8pt; }
-  /* Side borders in each cell's own fill: PDF viewers anti-alias the edge where two cells' fills meet,
-     which shows as a hairline break in a filled row. A border of the same color covers that edge. */
+  /* Each filled cell casts a 1px shadow of its own fill to both sides. PDF viewers (Preview) anti-alias the edge
+     where two cells' fills meet, which shows as a hairline break in a filled row; the overlapping shadows leave
+     no edge there. Shadows don't take up space, so the layout is unchanged. */
   th { font-weight: 600; background: var(--ink); color: #fff; padding-top: 6pt; padding-bottom: 6pt;
-       border-left: 1px solid var(--ink); border-right: 1px solid var(--ink); }
-  tbody tr:nth-child(odd) td { background: #f5f5f5; border-left: 1px solid #f5f5f5; border-right: 1px solid #f5f5f5; }
+       box-shadow: 1px 0 0 var(--ink), -1px 0 0 var(--ink); }
+  tbody tr:nth-child(odd) td { background: #f5f5f5; box-shadow: 1px 0 0 #f5f5f5, -1px 0 0 #f5f5f5; }
   /* md2html.py classes markdown tables by column count. */
   table.cols2 th, table.cols2 td { width: 50%; }
   table.cols4 th:first-child, table.cols4 td:first-child { width: 20%; }
@@ -59,13 +60,20 @@
   .meta-label { font-weight: 600; color: var(--muted); }
   table.scope td:first-child { width: 24%; font-weight: 600; }
   table.price th:last-child, table.price td:last-child { width: 22%; text-align: right; white-space: nowrap; }
-  table.price tr.total td { background: #eeeeee; border-top: 1.5px solid var(--ink); font-weight: 600; padding-top: 7pt;
-                            border-left: 1px solid #eeeeee; border-right: 1px solid #eeeeee; }
+  /* Total row: gray fill with a 1.5px rule above it. The rule is one bar across the whole table (the first
+     cell's ::before, positioned against the table), not a border per cell: per-cell borders leave a break
+     where the cells meet in Preview. It sits at the bar's static spot (the cell's content top), pulled up
+     by the cell's top padding plus its own height. */
+  table.price { position: relative; }
+  table.price tr.total td { background: #eeeeee; font-weight: 600; padding-top: 7pt;
+                            box-shadow: 1px 0 0 #eeeeee, -1px 0 0 #eeeeee; }
+  table.price tr.total td:first-child::before { content: ""; position: absolute; left: 0; right: 0;
+    height: 1.5px; margin-top: calc(-7pt - 1.5px); background: var(--ink); }
   table.timeline td:first-child { width: 18%; color: var(--muted); font-weight: 600; }
   .note { font-size: 9pt; color: var(--muted); }
   .check { margin: 0 0 6pt 0; }
   table.sign { margin: 6pt 0 0 0; }
-  table.sign td, table.sign tbody tr:nth-child(odd) td { background: none; border: 0; width: 50%; padding: 0 24pt 0 0; }
+  table.sign td, table.sign tbody tr:nth-child(odd) td { background: none; box-shadow: none; width: 50%; padding: 0 24pt 0 0; }
   .line { border-bottom: 1px solid #999; height: 22pt; margin-bottom: 3pt; }
   .label { font-size: 8.5pt; color: var(--muted); }
 

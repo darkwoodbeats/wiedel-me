@@ -37,6 +37,7 @@ const pageCss = (title) => `
   @top-right {
     content: ${cssString(title)};
     vertical-align: bottom; text-align: right; padding-bottom: 0.182in; margin-bottom: 0.32in; border-bottom: ${RULE};
+    margin-left: -2px; /* tuck under the logo's half of the rule, so the two halves leave no seam where they meet */
     font-family: "Mona Sans", "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 8.75pt; font-weight: 500;
     font-style: italic; /* slanted by Chrome: the site's Mona Sans has no italic cut */
     line-height: 1.2; color: #1c1c1c;
