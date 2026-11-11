@@ -1,7 +1,7 @@
 # Email signature
 
 The caleb@wiedel.me signature: the black print wordmark over a 2px rule (like the quote and invoice header), then name,
-title, email, site, LinkedIn and city. Open `signatures.html` in a browser, press **Copy signature** and paste it into
+title, email, LinkedIn and city. The logo links to wiedel.me, so the details line leaves the site out. Open `signatures.html` in a browser, press **Copy signature** and paste it into
 your mail app's signature settings (the page has the steps for Gmail, Roundcube webmail, Apple Mail and Outlook).
 
 The logo loads from `https://wiedel.me/email/wiedel-me-logo-black.png` (`public/email/` in this repo). A hosted image
