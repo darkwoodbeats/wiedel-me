@@ -82,19 +82,26 @@
 
 .meta {
   display: grid;
-  grid-template-columns: auto 1fr;
+  grid-template-columns: minmax(0, 1fr);
   grid-template-areas:
-    "number host"
-    "title title"
-    "sector sector"
-    "description description";
-  align-items: baseline;
-  column-gap: 16px;
+    "topline"
+    "title"
+    "sector"
+    "description";
   padding-top: 22px;
 }
 
+/* Number, role and domain on one line. Where they don't all fit (phones), the domain drops whole onto a line of its own. */
+.topline {
+  grid-area: topline;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: 16px;
+  row-gap: 10px;
+}
+
 .number {
-  grid-area: number;
   font-family: var(--mono);
   font-size: 11px;
   letter-spacing: 0.2em;
@@ -102,9 +109,24 @@
   transition: color 0.35s ease;
 }
 
+/* My part in the project (Designed & Built, Developed, Maintained): a mono tag in a hairline box, like the site's other tags. */
+.role {
+  padding: 5px 9px;
+  border: 1px solid var(--hairline);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  line-height: 1.2;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--ink);
+  transition: border-color 0.35s ease;
+}
+
 .host {
-  grid-area: host;
-  justify-self: end;
+  margin-left: auto;
+  text-align: end;
+  overflow-wrap: anywhere;
   font-family: var(--mono);
   font-size: 10.5px;
   letter-spacing: 0.18em;
@@ -170,6 +192,10 @@
 
   .card:hover .host {
     color: var(--cyan);
+  }
+
+  .card:hover .role {
+    border-color: rgb(98 242 255 / 0.35);
   }
 
   .card:hover .title {

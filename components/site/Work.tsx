@@ -50,19 +50,27 @@ function ProjectCard({ project, number }: { project: Project; number: string }) 
           className={styles.shot}
         />
       </div>
-      {/* Name first in reading order; the grid puts the number and domain on the row above. */}
+      {/* Name first in reading order; the grid puts the number, role and domain on the row above. */}
       <div className={styles.meta}>
         <h3 className={styles.title}>{project.title}</h3>
         <p className={styles.sector}>{project.sector}</p>
         {project.description && <p className={styles.description}>{project.description}</p>}
-        <span className={styles.host}>
-          {host}
-          <span aria-hidden="true"> ↗</span>
-          <span className={s.srOnly}> (opens in a new tab)</span>
-        </span>
-        <span className={styles.number} aria-hidden="true">
-          {number}
-        </span>
+        <div className={styles.topline}>
+          <span className={styles.number} aria-hidden="true">
+            {number}
+          </span>
+          {project.role && (
+            <span className={styles.role}>
+              <span className={s.srOnly}>My role: </span>
+              {project.role}
+            </span>
+          )}
+          <span className={styles.host}>
+            {host}
+            <span aria-hidden="true"> ↗</span>
+            <span className={s.srOnly}> (opens in a new tab)</span>
+          </span>
+        </div>
       </div>
     </a>
   );
