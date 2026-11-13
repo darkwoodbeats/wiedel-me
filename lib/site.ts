@@ -5,6 +5,14 @@ export const siteName = "Wiedel.me";
 
 export const linkedinUrl = "https://www.linkedin.com/in/cbwiedel";
 
+/**
+ * Google Tag Manager container for wiedel.me. Tracking is configured inside it: version 1 (published
+ * 2026-11-13) fires Google Analytics 4, measurement ID G-EF5ZCSPLR1. Add or change tags in Tag Manager,
+ * not here, and don't also load GA4 directly or every page view counts twice. The ID is public (it
+ * ships in every page). Empty leaves the tag off the site.
+ */
+export const gtmId = "GTM-57HQZP2N";
+
 export interface NavLink {
   label: string;
   href: string;

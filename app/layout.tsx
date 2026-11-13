@@ -1,7 +1,8 @@
+import { GoogleTagManager } from "@next/third-parties/google";
 import type { Metadata, Viewport } from "next";
 import { heroFontVariables } from "@/components/hero/fonts";
 import { Footer } from "@/components/site/Footer";
-import { siteName, siteUrl } from "@/lib/site";
+import { gtmId, siteName, siteUrl } from "@/lib/site";
 import "./globals.css";
 
 const description =
@@ -35,6 +36,8 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={heroFontVariables}>
+      {/* Google Tag Manager (GA4 lives inside the container); loads after the page hydrates. */}
+      {gtmId && <GoogleTagManager gtmId={gtmId} />}
       <body>
         {children}
         <Footer />
